@@ -73,9 +73,13 @@ Dưới đây là một số ví dụ về các API endpoints có thể được
 
 1. Clone repository từ GitHub:
 
-> `git clone <repository_url>` 2. Di chuyển vào thư mục backend:
-> `cd TeddyShop/backend` 3. Cài đặt các dependencies:
-> yarn install 4. Cấu hình kết nối cơ sở dữ liệu MongoDB trong tệp `database.js`. 5. Khởi chạy máy chủ:
-> npm start
+> `git clone <repository_url>`
+2. Di chuyển vào thư mục backend:
+> `cd TeddyShop/backend`
+3. Cài đặt các dependencies:
+> `yarn install`
+4. Cấu hình kết nối cơ sở dữ liệu MongoDB trong tệp `database.js`.
+5. Khởi chạy máy chủ:
+> `npm start`
 
 Sau khi máy chủ được khởi chạy thành công, bạn có thể gửi các yêu cầu API từ phía frontend của mình đến các endpoint tương ứng.
