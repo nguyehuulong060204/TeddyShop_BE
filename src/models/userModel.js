@@ -9,7 +9,8 @@ var userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
+      trim: true
     },
     mobile: {
       type: String,
@@ -18,7 +19,9 @@ var userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
+      minlength: 8,
+      private: true
     },
     role: {
       type: String,
@@ -64,7 +67,11 @@ var userSchema = new mongoose.Schema(
     },
     passwordChangeAt: Date,
     passwordResetToken: String,
-    passwordResetExpores: String
+    passwordResetExpores: String,
+    isEmailVerified: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 )
