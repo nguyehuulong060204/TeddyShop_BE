@@ -7,7 +7,8 @@ import cors from 'cors'
 
 import dbConnection from '~/config/mongodb'
 import { env } from '~/config/environment'
-import { corsOptions } from './config/cors'
+import { corsOptions } from '~/config/cors'
+import { APIs_V1 } from '~/routes/v1'
 
 // config express, morgan, bodyParser, cookieParser and helmet
 const app = express()
@@ -22,6 +23,7 @@ app.use(cookieParser())
 dbConnection()
 
 // V1 API routes
+app.use('/api/v1', APIs_V1)
 
 app.listen(env.APP_PORT, () => {
   // eslint-disable-next-line no-console
