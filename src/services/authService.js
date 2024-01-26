@@ -61,10 +61,37 @@ const logout = async (userId) => {
   }
 }
 
+const getUserByid = async (userId) => {
+  try {
+    return User.findById(userId)
+  } catch (error) {
+    throw new ApiError(StatusCodes.FORBIDDEN, error.message)
+  }
+}
+
+const blockUser = async (userId) => {
+  try {
+    return await User.findByIdAndUpdate(userId, { isBlocked: true }, { new: true })
+  } catch (error) {
+    throw new ApiError(StatusCodes.FORBIDDEN, error.message)
+  }
+}
+
+const unBlockUser = async (userId) => {
+  try {
+    return await User.findByIdAndUpdate(userId, { isBlocked: false }, { new: true })
+  } catch (error) {
+    throw new ApiError(StatusCodes.FORBIDDEN, error.message)
+  }
+}
+
 export const authService = {
   createUser,
   loginUser,
   verifyRefreshToken,
   getAllUsers,
-  logout
+  logout,
+  getUserByid,
+  blockUser,
+  unBlockUser
 }

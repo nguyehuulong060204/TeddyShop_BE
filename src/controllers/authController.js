@@ -3,6 +3,7 @@ import { generateToken } from '~/config/jwtToken'
 import { generateRefreshToken } from '~/config/refreshToken'
 import { authService } from '~/services/authService'
 import ApiError from '~/utils/ApiError'
+import validateMongodbId from '~/utils/validateMongodbId'
 
 const register = async (req, res, next) => {
   try {
@@ -30,8 +31,7 @@ const login = async (req, res, next) => {
       userEmail: user.email,
       userRole: user.role,
       userAvatar: user.avatar,
-      token,
-      refreshToken
+      token
     })
   } catch (error) {
     next(error)
@@ -107,10 +107,49 @@ const getAllUsers = async (req, res, next) => {
   }
 }
 
+const getUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    validateMongodbId(id)
+    const user = await authService.getUserByid(id)
+
+    res.status(StatusCodes.OK).json({ user })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const blockUser = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    validateMongodbId(id)
+    const userBlocked = await authService.blockUser(id)
+
+    res.status(StatusCodes.OK).json({ meassage: 'User blocked', userBlocked })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const unBlockUser = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    validateMongodbId(id)
+    const userUnBlocked = await authService.unBlockUser(id)
+
+    res.status(StatusCodes.OK).json({ message: 'User unblocked', userUnBlocked })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const authController = {
   register,
   login,
   refreshToken,
   getAllUsers,
-  logoutUser
+  logoutUser,
+  getUserById,
+  blockUser,
+  unBlockUser
 }
