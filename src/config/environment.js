@@ -2,6 +2,7 @@ import 'dotenv/config'
 
 export const env = {
   APP_PORT: process.env.APP_PORT || 8081,
+  APP_HOST: process.env.APP_HOST || 'localhost',
 
   MONGODB_URI: process.env.MONGODB_URI,
   DATABASE_NAME: process.env.DATABASE_NAME,
@@ -13,5 +14,8 @@ export const env = {
 
   CLOUD_NAME: process.env.CLOUD_NAME,
   API_KEY: process.env.API_KEY,
-  API_SECRET: process.env.API_SECRET
+  API_SECRET: process.env.API_SECRET,
+
+  USER_EMAIL: process.env.USER_EMAIL,
+  USER_PASSWORD: process.env.USER_PASSWORD
 }
