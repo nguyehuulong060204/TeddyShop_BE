@@ -41,7 +41,7 @@ const updateBrand = async (req, res, next) => {
       )
       .optional(),
     tags: Joi.array().items(Joi.string()).optional(),
-    // productCategory: Joi.string().required().trim(),
+    productCategory: Joi.string().required().trim(),
     isActive: Joi.boolean().default(true)
   })
 
