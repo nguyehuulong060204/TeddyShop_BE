@@ -7,13 +7,17 @@ const createUser = async (req, res, next) => {
   const correctCondition = Joi.object({
     email: Joi.string().email().required().trim(),
     fullName: Joi.string().required().trim(),
-    password: Joi.string().required().min(8).trim()
+    password: Joi.string().required().min(8).trim(),
+    avatar: Joi.object({
+      public_id: Joi.string(),
+      url: Joi.string()
+    })
   })
   await correctCondition
     .validateAsync(req.body, { abortEarly: false })
     .then(() => next())
-    .catch((error) => {
-      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message))
+    .catch(() => {
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, 'Invalid user data'))
     })
 }
 
@@ -26,8 +30,8 @@ const loginUser = async (req, res, next) => {
   await correctCondition
     .validateAsync(req.body, { ebortEarly: false })
     .then(() => next())
-    .catch((error) => {
-      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message))
+    .catch(() => {
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, 'Wrong email or password'))
     })
 }
 
