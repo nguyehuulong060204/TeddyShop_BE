@@ -18,14 +18,14 @@ var brandSchema = new mongoose.Schema(
         url: String
       }
     ],
-    tags: [
-      {
-        name: String
-      }
-    ],
+    tags: [],
     isActive: {
       type: Boolean,
       default: true
+    },
+    productCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ProductCategory'
     },
     totalProducts: {
       type: Number,
