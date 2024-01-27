@@ -3,12 +3,15 @@ import User from '~/models/userModel'
 import ApiError from '~/utils/ApiError'
 import jwt from 'jsonwebtoken'
 import { env } from '~/config/environment'
+import { sendEmail } from './emailService'
 
 const createUser = async (userData) => {
   if (await User.isEmailTaken(userData.email)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Email already taken')
   }
-
+  setTimeout(async () => {
+    await sendEmail({ receiverEmail: userData?.email, userName: userData?.fullName })
+  }, 20000)
   return User.create(userData)
 }
 
