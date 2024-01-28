@@ -11,15 +11,15 @@ const createMember = async (req, res, next) => {
     images: Joi.object({
       public_id: Joi.string(),
       url: Joi.string
-    }).optional()
-    // links: Joi.array()
-    //   .items(
-    //     Joi.object({
-    //       name: Joi.string(),
-    //       url: Joi.string()
-    //     })
-    //   )
-    //   .optional()
+    }).optional(),
+    links: Joi.array()
+      .items(
+        Joi.object({
+          name: Joi.string(),
+          url: Joi.string()
+        })
+      )
+      .optional()
   })
 
   await conrrectCondition

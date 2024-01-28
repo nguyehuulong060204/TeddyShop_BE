@@ -11,6 +11,10 @@ var eventSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    slug: {
+      type: String,
+      require: true
+    },
     time: {
       type: Date,
       required: true
