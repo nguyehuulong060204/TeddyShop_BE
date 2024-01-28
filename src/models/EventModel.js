@@ -45,6 +45,13 @@ var eventSchema = new mongoose.Schema(
         ref: 'Schedule',
         required: true
       }
+    ],
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Member',
+        required: true
+      }
     ]
   },
   {
