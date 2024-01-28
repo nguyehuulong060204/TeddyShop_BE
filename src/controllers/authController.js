@@ -10,7 +10,7 @@ const register = async (req, res, next) => {
     const user = await authService.createUser(req.body)
     res.status(StatusCodes.CREATED).json({ user })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -34,7 +34,7 @@ const login = async (req, res, next) => {
       token
     })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -67,7 +67,7 @@ const refreshToken = async (req, res, next) => {
       refreshToken: newRefreshToken
     })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -93,7 +93,7 @@ const logoutUser = async (req, res, next) => {
     })
     res.status(StatusCodes.OK).json({ message: 'Logout successfully' })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -103,7 +103,7 @@ const getAllUsers = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ users })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -115,7 +115,7 @@ const getUserById = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ user })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -127,7 +127,7 @@ const blockUser = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ meassage: 'User blocked', userBlocked })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -139,7 +139,7 @@ const unBlockUser = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ message: 'User unblocked', userUnBlocked })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
