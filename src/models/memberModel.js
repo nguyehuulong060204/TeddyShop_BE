@@ -15,12 +15,10 @@ var memberSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    images: [
-      {
-        public_id: String,
-        url: String
-      }
-    ],
+    images: {
+      public_id: String,
+      url: String
+    },
     links: [
       {
         name: String,
