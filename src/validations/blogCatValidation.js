@@ -21,7 +21,7 @@ const createBlogCat = async (req, res, next) => {
     .validateAsync(req.body, { abortEarly: false })
     .then(() => next())
     .catch(() => {
-      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY), 'Invalida Blog Category Data')
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, 'Invalida Blog Category Data'))
     })
 }
 
@@ -43,7 +43,7 @@ const updateBlogCat = async (req, res, next) => {
     .validateAsync(req.body, { abortEarly: false })
     .then(() => next())
     .catch(() => {
-      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY), 'Invalida Blog Category Data')
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, 'Invalida Blog Category Data'))
     })
 }
 

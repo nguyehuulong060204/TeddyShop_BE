@@ -42,12 +42,12 @@ const refreshToken = async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refreshToken
     if (!refreshToken) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, 'No refresh token')
+      new ApiError(StatusCodes.UNAUTHORIZED, 'No refresh token')
     }
 
     const user = await authService.verifyRefreshToken(refreshToken)
     if (!user) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, 'No user')
+      new ApiError(StatusCodes.UNAUTHORIZED, 'No user')
     }
 
     const newRefreshToken = await generateRefreshToken(user._id)

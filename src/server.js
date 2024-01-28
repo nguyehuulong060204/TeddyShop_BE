@@ -9,6 +9,7 @@ import dbConnection from '~/config/mongodb'
 import { env } from '~/config/environment'
 import { corsOptions } from '~/config/cors'
 import { APIs_V1 } from '~/routes/v1'
+import { errorHandlingMiddleware } from './middlewares/errorHandlingMiddleware'
 
 // config express, morgan, bodyParser, cookieParser and helmet
 const app = express()
@@ -24,6 +25,9 @@ dbConnection()
 
 // V1 API routes
 app.use('/api/v1', APIs_V1)
+
+// middleware xử lý lỗi tập trung
+app.use(errorHandlingMiddleware)
 
 app.listen(env.APP_PORT, () => {
   // eslint-disable-next-line no-console
