@@ -1,6 +1,4 @@
 import jwt from 'jsonwebtoken'
-import ApiError from '~/utils/ApiError'
-import { StatusCodes } from 'http-status-codes'
 import { env } from '~/config/environment'
 import { authService } from '~/services/authService'
 
@@ -10,17 +8,17 @@ const authMiddleware = async (req, res, next) => {
   if (req?.headers?.authorization?.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
 
-    try {
-      if (token) {
-        const deconded = jwt.verify(token, env.JWT_SECRET)
-        const user = await authService.getUserByid(deconded?.id)
-        req.user = user
+    if (token) {
+      const deconded = jwt.verify(token, env.JWT_SECRET)
+      const user = await authService.getUserByid(deconded?.id)
+      req.user = user
 
-        next()
-      }
-    } catch (error) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Not Authorized token expired, Please Login')
+      next()
+    } else {
+      throw new Error('Not Authorized token expired, Please Login again')
     }
+  } else {
+    throw new Error('There is no token arrached to header')
   }
 }
 
@@ -30,10 +28,10 @@ const isAdmin = async (req, res, next) => {
     if (user.role === 'admin') {
       next()
     } else {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not an Admin')
+      throw new Error('You are not an admin')
     }
   } catch (error) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Not Authorized token expired, Please Login')
+    throw new Error('Not Authorized token expired, Please Login again')
   }
 }
 
