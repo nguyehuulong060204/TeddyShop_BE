@@ -6,6 +6,7 @@ import { brandRouter } from './brandRoute'
 import { productCategoryRouter } from './productCatRoute'
 import { blogCategoryRouter } from './blogCatRoute'
 import { memberRouter } from './memberRoute'
+import { eventRouter } from './eventRoute'
 
 const Router = express.Router()
 
@@ -20,6 +21,7 @@ Router.use('/brand', brandRouter)
 Router.use('/product/category', productCategoryRouter)
 Router.use('/blog/category', blogCategoryRouter)
 Router.use('/member', memberRouter)
+Router.use('/event', eventRouter)
 Router.use('/upload', uploadRouter)
 
 export const APIs_V1 = Router
