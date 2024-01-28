@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import { brandService } from '~/services/brandService'
+import ApiError from '~/utils/ApiError'
 import validateMongodbId from '~/utils/validateMongodbId'
 
 const createBrand = async (req, res, next) => {
@@ -8,7 +9,7 @@ const createBrand = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ brand })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -18,7 +19,7 @@ const getAllBrand = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ brands })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -30,7 +31,7 @@ const getBrandById = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ brand })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -41,7 +42,7 @@ const updateBrand = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ updatedbrand })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -52,7 +53,7 @@ const deleteBrandById = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ message: 'Deleted Successfully', deletedBrand })
   } catch (error) {
-    next(error)
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 

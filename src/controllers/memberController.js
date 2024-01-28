@@ -9,7 +9,7 @@ const createMember = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ member })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Cannot create member.'))
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -19,7 +19,7 @@ const getAllMember = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ members })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Cannot read members.'))
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -31,7 +31,7 @@ const getMemberById = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ member })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Cannot get member by id.'))
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -43,7 +43,7 @@ const updateMember = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ updatedMember })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Cannot update member by id.'))
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
@@ -55,7 +55,7 @@ const deleteMember = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({ deleteMember })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Canot delete member.'))
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
 }
 
