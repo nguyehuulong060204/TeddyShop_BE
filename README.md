@@ -6,16 +6,20 @@ Phần backend của TeddyShop là nơi xử lý logic và cung cấp API cho ph
 
 controllers # Thư mục chứa các tệp điều khiển (controllers)
 models # Thư mục chứa các tệp mô hình (models)
+services # Thư mục chưa cá tệp tương tác với models (serivces)
 routes # Thư mục chứa các tệp định tuyến (routes)
 config
-database.js # Cấu hình cơ sở dữ liệu
+mongodb.js # Cấu hình cơ sở dữ liệu
+
 server.js # Cấu hình máy chủ
 
 - **Thư mục `controllers`:** Chứa các tệp điều khiển (controllers) để xử lý yêu cầu từ phía frontend và truy cập vào dữ liệu. Ví dụ: `productController.js`, `orderController.js`, `userController.js`.
 
-- **Thư mục `models`:** Chứa các tệp mô hình (models) đại diện cho các đối tượng trong cơ sở dữ liệu. Ví dụ: `Product.js`, `Order.js`, `User.js`.
+- **Thư mục `models`:** Chứa các tệp mô hình (models) đại diện cho các đối tượng trong cơ sở dữ liệu. Ví dụ: `ProductModels.js`, `OrderModels.js`, `UserModels.js`.
+  
+- **Thư mục `services`:** Chứa các để thao tác với cơ sở dữ liệu. Ví dụ: `productService.js`, `OrderService.js`, `UserService.js`.
 
-- **Thư mục `routes`:** Chứa các tệp định tuyến (routes) để xác định các API endpoint và liên kết chúng với các tệp điều khiển tương ứng. Ví dụ: `productRoutes.js`, `orderRoutes.js`, `userRoutes.js`.
+- **Thư mục `routes`:** Chứa các tệp định tuyến (routes) để xác định các API endpoint và liên kết chúng với các tệp điều khiển tương ứng. Ví dụ: `productRoute.js`, `orderRoute.js`, `userRoute.js`.
 
 - **Tệp `database.js`:** Cấu hình kết nối với cơ sở dữ liệu MongoDB.
 
