@@ -9,6 +9,7 @@ import { memberRouter } from './memberRoute'
 import { eventRouter } from './eventRoute'
 import { scheduleRouter } from './scheduleRoute'
 import { blogRouter } from './blogRoute'
+import { feedbackRouter } from './feedbackRoute'
 
 const Router = express.Router()
 
@@ -26,6 +27,7 @@ Router.use('/blog', blogRouter)
 Router.use('/member', memberRouter)
 Router.use('/event', eventRouter)
 Router.use('/schedule', scheduleRouter)
+Router.use('/feedback', feedbackRouter)
 Router.use('/upload', uploadRouter)
 
 export const APIs_V1 = Router

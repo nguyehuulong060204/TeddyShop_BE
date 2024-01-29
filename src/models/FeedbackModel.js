@@ -15,10 +15,10 @@ var feedbackSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
+    // userId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'User'
+    // },
     submitDate: {
       type: Date,
       default: new Date()
