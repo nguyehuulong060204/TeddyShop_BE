@@ -1,4 +1,4 @@
-const mongoose = require('mongoose') // Erase if already required
+const mongoose = require('mongoose')
 
 // Declare the Schema of the Mongo model
 var blogSchema = new mongoose.Schema(
@@ -9,9 +9,7 @@ var blogSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      uniquie: true,
-      required: true,
-      lowercase: true
+      required: true
     },
     content: {
       type: String,
@@ -23,15 +21,21 @@ var blogSchema = new mongoose.Schema(
         url: String
       }
     ],
-    tags: [
-      {
-        name: String
-      }
-    ],
+    tags: [String],
     views: {
       type: Number,
       default: 0
     },
+    likes: {
+      type: Number,
+      default: 0
+    },
+    likedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
     blogCategory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'BlogCategory',

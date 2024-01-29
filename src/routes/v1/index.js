@@ -8,6 +8,7 @@ import { blogCategoryRouter } from './blogCatRoute'
 import { memberRouter } from './memberRoute'
 import { eventRouter } from './eventRoute'
 import { scheduleRouter } from './scheduleRoute'
+import { blogRouter } from './blogRoute'
 
 const Router = express.Router()
 
@@ -21,6 +22,7 @@ Router.use('/auth', authRouter)
 Router.use('/brand', brandRouter)
 Router.use('/product/category', productCategoryRouter)
 Router.use('/blog/category', blogCategoryRouter)
+Router.use('/blog', blogRouter)
 Router.use('/member', memberRouter)
 Router.use('/event', eventRouter)
 Router.use('/schedule', scheduleRouter)
