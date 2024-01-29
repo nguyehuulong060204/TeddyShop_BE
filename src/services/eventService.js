@@ -59,7 +59,12 @@ const getUpcomingEvents = async () => {
 }
 
 const updateEvent = async (eventId, eventData) => {
-  return await Event.findByIdAndUpdate(eventId, eventData, { new: true })
+  const newEvent = {
+    ...eventData,
+    slug: slugify(eventData.name)
+  }
+
+  return await Event.findByIdAndUpdate(eventId, newEvent, { new: true })
 }
 
 const deleteEvent = async (eventId) => {
