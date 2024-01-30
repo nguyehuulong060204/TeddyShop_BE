@@ -1,6 +1,5 @@
-const mongoose = require('mongoose') // Erase if already required
+const mongoose = require('mongoose')
 
-// Declare the Schema of the Mongo model
 var priceSchema = new mongoose.Schema(
   {
     productId: {
@@ -12,13 +11,21 @@ var priceSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    color: {
-      type: String,
+    quantity: {
+      type: Number,
       required: true
     },
+    color: {
+      name: String,
+      code: String
+    },
     type: {
-      type: String,
-      required: true
+      name: String,
+      code: String
+    },
+    size: {
+      name: String,
+      code: String
     }
   },
   {
@@ -27,4 +34,4 @@ var priceSchema = new mongoose.Schema(
 )
 
 //Export the model
-module.exports = mongoose.model('User', priceSchema)
+module.exports = mongoose.model('Price', priceSchema)
