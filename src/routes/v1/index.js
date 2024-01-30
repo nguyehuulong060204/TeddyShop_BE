@@ -10,6 +10,7 @@ import { eventRouter } from './eventRoute'
 import { scheduleRouter } from './scheduleRoute'
 import { blogRouter } from './blogRoute'
 import { feedbackRouter } from './feedbackRoute'
+import { productRoute } from './productRoute'
 
 const Router = express.Router()
 
@@ -22,6 +23,7 @@ Router.get('/status', (req, res) => {
 Router.use('/auth', authRouter)
 Router.use('/brand', brandRouter)
 Router.use('/product/category', productCategoryRouter)
+Router.use('/product', productRoute)
 Router.use('/blog/category', blogCategoryRouter)
 Router.use('/blog', blogRouter)
 Router.use('/member', memberRouter)

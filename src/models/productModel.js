@@ -1,6 +1,5 @@
-const mongoose = require('mongoose') // Erase if already required
+const mongoose = require('mongoose')
 
-// Declare the Schema of the Mongo model
 var productSchema = new mongoose.Schema(
   {
     name: {
@@ -10,8 +9,7 @@ var productSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
-      lowercase: true
+      required: true
     },
     description: {
       type: String,
@@ -24,20 +22,30 @@ var productSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    color: [
+    attributes: [
       {
-        name: String,
-        code: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Price'
       }
     ],
-    type: [
-      {
-        name: String,
-        code: String
-      }
-    ],
+    // số lượng tổng
     quantity: {
       type: Number,
+      required: true
+    },
+    // số lượng đã bán
+    quantitySold: {
+      type: Number,
+      default: 0
+    },
+    // số lượng có sẵn
+    quantityAvailable: {
+      type: Number,
+      default: 0
+    },
+    // bảo hành: ví dụ 6 tháng, 12 tháng,...
+    warranty: {
+      type: String,
       required: true
     },
     brand: {
@@ -58,7 +66,7 @@ var productSchema = new mongoose.Schema(
     ],
     tags: [
       {
-        name: String
+        type: String
       }
     ],
     ratings: [
