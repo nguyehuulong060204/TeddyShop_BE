@@ -8,6 +8,18 @@ const getAllMember = async () => {
   return await Member.find()
 }
 
+const getMemberByName = async (fullName) => {
+  return await Member.find({ fullName: fullName })
+}
+
+const getMemberByPosition = async (position) => {
+  return await Member.find({ position: position })
+}
+
+const getMemberByEmail = async (email) => {
+  return await Member.find({ email: email })
+}
+
 const getMemberById = async (memberId) => {
   return await Member.findById(memberId)
 }
@@ -25,5 +37,8 @@ export const memberService = {
   getAllMember,
   getMemberById,
   updateMember,
-  deleteMember
+  deleteMember,
+  getMemberByName,
+  getMemberByPosition,
+  getMemberByEmail
 }

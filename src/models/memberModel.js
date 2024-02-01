@@ -19,12 +19,33 @@ var memberSchema = new mongoose.Schema(
       public_id: String,
       url: String
     },
-    links: [
-      {
-        name: String,
-        url: String
-      }
-    ]
+    email: {
+      type: String,
+      required: true
+    },
+    phoneNumber: {
+      type: String,
+      required: true
+    },
+    socialMedia: {
+      facebook: String,
+      twitter: String,
+      instagram: String,
+      zalo: String
+    },
+    status: {
+      type: String,
+      enum: ['active', 'inactive'],
+      default: 'active'
+    },
+    startWorkingDate: {
+      type: Date,
+      required: true,
+      default: Date.now()
+    },
+    endWorkingDate: {
+      type: Date
+    }
   },
   {
     timestamps: true

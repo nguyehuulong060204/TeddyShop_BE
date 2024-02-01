@@ -8,6 +8,14 @@ const createMember = async (req, res, next) => {
     fullName: Joi.string().required().min(8).trim(),
     position: Joi.string().required().trim(),
     description: Joi.string().trim().optional(),
+    email: Joi.email().required(),
+    phoneNumber: Joi.string().required(),
+    socialMedia: Joi.object({
+      facebook: Joi.string(),
+      twitter: Joi.string(),
+      instagram: Joi.string(),
+      linkedin: Joi.string()
+    }).optional(),
     images: Joi.object({
       public_id: Joi.string(),
       url: Joi.string
@@ -38,6 +46,14 @@ const updateMember = async (req, res, next) => {
     images: Joi.object({
       public_id: Joi.string(),
       url: Joi.string
+    }).optional(),
+    email: Joi.email().required(),
+    phoneNumber: Joi.string().required(),
+    socialMedia: Joi.object({
+      facebook: Joi.string(),
+      twitter: Joi.string(),
+      instagram: Joi.string(),
+      linkedin: Joi.string()
     }).optional(),
     links: Joi.array()
       .items(

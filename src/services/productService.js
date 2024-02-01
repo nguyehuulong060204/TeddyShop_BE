@@ -3,6 +3,8 @@ import Price from '~/models/priceModel'
 
 import { slugify } from '~/utils/formatters'
 
+// update khi người dùng thanh toán thì mới trừ sản phẩm và cập nhật lại trạng thái sản phẩm
+
 // product
 const createProduct = async (productData) => {
   const newProductData = {
