@@ -23,10 +23,12 @@ var brandSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
-    productCategory: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'ProductCategory'
-    },
+    productCategory: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ProductCategory'
+      }
+    ],
     totalProducts: {
       type: Number,
       default: 0

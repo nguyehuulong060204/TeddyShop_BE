@@ -15,7 +15,15 @@ const createMember = async (req, res, next) => {
 
 const getAllMember = async (req, res, next) => {
   try {
-    const members = await memberService.getAllMember()
+    let members
+    const { name, position } = req.query
+    if (name) {
+      members = await memberService.getMemberByName(name)
+    } else if (position) {
+      members = await memberService.getMemberByPosition(position)
+    } else {
+      members = await memberService.getAllMember()
+    }
 
     res.status(StatusCodes.OK).json({ members })
   } catch (error) {
