@@ -9,7 +9,9 @@ const getAllMember = async () => {
 }
 
 const getMemberByName = async (fullName) => {
-  return await Member.find({ fullName: fullName })
+  const regex = new RegExp(fullName, 'i')
+  console.log(regex)
+  return await Member.find({ fullName: regex })
 }
 
 const getMemberByPosition = async (position) => {

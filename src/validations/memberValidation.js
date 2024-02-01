@@ -8,7 +8,7 @@ const createMember = async (req, res, next) => {
     fullName: Joi.string().required().min(8).trim(),
     position: Joi.string().required().trim(),
     description: Joi.string().trim().optional(),
-    email: Joi.email().required(),
+    email: Joi.string().email().required(),
     phoneNumber: Joi.string().required(),
     socialMedia: Joi.object({
       facebook: Joi.string(),
@@ -18,16 +18,9 @@ const createMember = async (req, res, next) => {
     }).optional(),
     images: Joi.object({
       public_id: Joi.string(),
-      url: Joi.string
+      url: Joi.string()
     }).optional(),
-    links: Joi.array()
-      .items(
-        Joi.object({
-          name: Joi.string(),
-          url: Joi.string()
-        })
-      )
-      .optional()
+    startWorkingDate: Joi.date().optional()
   })
 
   await conrrectCondition
@@ -43,11 +36,7 @@ const updateMember = async (req, res, next) => {
     fullName: Joi.string().required().min(8).trim(),
     position: Joi.string().required().trim(),
     description: Joi.string().trim().optional(),
-    images: Joi.object({
-      public_id: Joi.string(),
-      url: Joi.string
-    }).optional(),
-    email: Joi.email().required(),
+    email: Joi.string().email().required(),
     phoneNumber: Joi.string().required(),
     socialMedia: Joi.object({
       facebook: Joi.string(),
@@ -55,14 +44,11 @@ const updateMember = async (req, res, next) => {
       instagram: Joi.string(),
       linkedin: Joi.string()
     }).optional(),
-    links: Joi.array()
-      .items(
-        Joi.object({
-          name: Joi.string(),
-          url: Joi.string()
-        })
-      )
-      .optional()
+    images: Joi.object({
+      public_id: Joi.string(),
+      url: Joi.string()
+    }).optional(),
+    startWorkingDate: Joi.date().optional()
   })
 
   await conrrectCondition
