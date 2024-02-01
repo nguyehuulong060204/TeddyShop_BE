@@ -56,6 +56,10 @@ const getAllUsers = async () => {
   }
 }
 
+const getUserAdmin = async () => {
+  return await User.find({ role: 'admin' })
+}
+
 const logout = async (userId) => {
   try {
     return User.findOneAndUpdate({ _id: userId }, { refreshTokens: [] })
@@ -65,27 +69,15 @@ const logout = async (userId) => {
 }
 
 const getUserByid = async (userId) => {
-  try {
-    return User.findById(userId)
-  } catch (error) {
-    throw new ApiError(StatusCodes.FORBIDDEN, error.message)
-  }
+  return User.findById(userId)
 }
 
 const blockUser = async (userId) => {
-  try {
-    return await User.findByIdAndUpdate(userId, { isBlocked: true }, { new: true })
-  } catch (error) {
-    throw new ApiError(StatusCodes.FORBIDDEN, error.message)
-  }
+  return await User.findByIdAndUpdate(userId, { isBlocked: true }, { new: true })
 }
 
 const unBlockUser = async (userId) => {
-  try {
-    return await User.findByIdAndUpdate(userId, { isBlocked: false }, { new: true })
-  } catch (error) {
-    throw new ApiError(StatusCodes.FORBIDDEN, error.message)
-  }
+  return await User.findByIdAndUpdate(userId, { isBlocked: false }, { new: true })
 }
 
 export const authService = {
@@ -96,5 +88,6 @@ export const authService = {
   logout,
   getUserByid,
   blockUser,
-  unBlockUser
+  unBlockUser,
+  getUserAdmin
 }

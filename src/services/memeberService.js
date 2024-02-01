@@ -10,7 +10,6 @@ const getAllMember = async () => {
 
 const getMemberByName = async (fullName) => {
   const regex = new RegExp(fullName, 'i')
-  console.log(regex)
   return await Member.find({ fullName: regex })
 }
 

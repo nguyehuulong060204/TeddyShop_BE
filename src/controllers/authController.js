@@ -99,7 +99,13 @@ const logoutUser = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await authService.getAllUsers()
+    let users
+    const { role } = req.query
+    if (role === 'admin') {
+      users = await authService.getUserAdmin()
+    } else {
+      users = await authService.getAllUsers()
+    }
 
     res.status(StatusCodes.OK).json({ users })
   } catch (error) {
