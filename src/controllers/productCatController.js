@@ -59,10 +59,38 @@ const deleteCategory = async (req, res, next) => {
   }
 }
 
+const addProductToCategory = async (req, res, next) => {
+  try {
+    const { proCatId, productId } = req.body
+    validateMongodbId(proCatId)
+    validateMongodbId(productId)
+    const updatedCategory = await productCatService.addProductToCategory(proCatId, productId)
+
+    res.status(StatusCodes.OK).json({ updatedCategory })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const removeProductFromCategory = async (req, res, next) => {
+  try {
+    const { proCatId, productId } = req.body
+    validateMongodbId(proCatId)
+    validateMongodbId(productId)
+    const updatedCategory = await productCatService.deleteProductFromCategory(proCatId, productId)
+
+    res.status(StatusCodes.OK).json({ updatedCategory })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 export const productCategoryController = {
   createCategory,
   getAllCategory,
   getCategoryById,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  addProductToCategory,
+  removeProductFromCategory
 }

@@ -12,20 +12,20 @@ var productCategorySchema = new mongoose.Schema(
       type: String,
       require: true
     },
-    images: [
-      {
-        public_id: String,
-        url: String
-      }
-    ],
-    tags: [
-      {
-        name: String
-      }
-    ],
+    tags: [],
     isActive: {
       type: Boolean,
       default: true
+    },
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+      }
+    ],
+    totalProduct: {
+      type: Number,
+      default: 0
     }
   },
   {

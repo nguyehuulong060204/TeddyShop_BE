@@ -8,12 +8,12 @@ const createProduct = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
     description: Joi.string().required().trim(),
-    priceOld: Joi.number().optional(),
+    priceSale: Joi.number().optional(),
     price: Joi.number().required(),
     quantity: Joi.number().required(),
     warranty: Joi.string().required().trim(),
-    brand: Joi.string().required().trim(),
-    category: Joi.string().required().trim(),
+    brand: Joi.string().required(),
+    category: Joi.string().required(),
     images: Joi.array()
       .items(
         Joi.object({
@@ -23,8 +23,7 @@ const createProduct = async (req, res, next) => {
       )
       .optional(),
     tags: Joi.array().items(Joi.string()).optional(),
-    createdBy: Joi.string().required().trim(),
-    status: Joi.string().valid('active', 'inactive').default('active')
+    createdBy: Joi.string().required().trim()
   })
 
   await conrrectCondition
@@ -39,22 +38,22 @@ const updateProduct = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
     description: Joi.string().required().trim(),
-    priceOld: Joi.number().optional(),
+    priceSale: Joi.number().optional(),
     price: Joi.number().required(),
     quantity: Joi.number().required(),
     warranty: Joi.string().required().trim(),
-    brand: Joi.string().required().trim(),
-    category: Joi.string().required().trim(),
+    brand: Joi.string().required(),
+    category: Joi.string().required(),
     images: Joi.array()
       .items(
         Joi.object({
           public_id: Joi.string(),
-          url: Joi.string()
+          url: Joi.string(),
+          _id: Joi.string().optional()
         })
       )
       .optional(),
-    tags: Joi.array().items(Joi.string()).optional(),
-    status: Joi.string().valid('active', 'inactive').default('active')
+    tags: Joi.array().items(Joi.string()).optional()
   })
 
   await conrrectCondition

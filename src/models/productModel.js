@@ -15,7 +15,7 @@ var productSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    priceOld: {
+    priceSale: {
       type: Number
     },
     price: {
@@ -64,11 +64,7 @@ var productSchema = new mongoose.Schema(
         url: String
       }
     ],
-    tags: [
-      {
-        type: String
-      }
-    ],
+    tags: [],
     ratings: [
       {
         start: Number,

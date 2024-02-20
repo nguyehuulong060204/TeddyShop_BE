@@ -5,7 +5,7 @@ const createBrand = async (brandData) => {
 }
 
 const getAllBrand = async () => {
-  return await Brand.find()
+  return await Brand.find().populate('productCategory', 'name').sort({ totalProduct: -1 })
 }
 
 const getBrandById = async (brandId) => {
@@ -30,6 +30,28 @@ const searchBrandForName = async (brandName) => {
   return await Brand.find().sort({ name: brandName })
 }
 
+const addProductToBrand = async (brandId, productId) => {
+  await Brand.findByIdAndUpdate(brandId, { $push: { products: productId } })
+
+  const brand = await Brand.findById(brandId)
+  const productCount = brand.products.length
+
+  const updatedBrand = await Brand.findByIdAndUpdate(brandId, { totalProduct: productCount }, { new: true })
+
+  return updatedBrand
+}
+
+const deleteProductFromBrand = async (brandId, productId) => {
+  await Brand.findByIdAndUpdate(brandId, { $pull: { products: productId } })
+
+  const brand = await Brand.findById(brandId)
+  const productCount = brand.products.length
+
+  const updatedBrand = await Brand.findByIdAndUpdate(brandId, { totalProduct: productCount }, { new: true })
+
+  return updatedBrand
+}
+
 export const brandService = {
   createBrand,
   getAllBrand,
@@ -37,5 +59,7 @@ export const brandService = {
   updateBrand,
   deleteBrandById,
   getAllBrandSorted,
-  searchBrandForName
+  searchBrandForName,
+  addProductToBrand,
+  deleteProductFromBrand
 }

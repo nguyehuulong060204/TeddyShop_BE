@@ -6,17 +6,16 @@ import ApiError from '~/utils/ApiError'
 const createBrand = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
-    description: Joi.string().required().trim(),
-    images: Joi.array()
-      .items(
-        Joi.object({
-          public_id: Joi.string(),
-          url: Joi.string()
-        })
-      )
-      .optional(),
-    tags: Joi.array().items(Joi.string()).optional(),
-    productCategory: Joi.string().required().trim(),
+    description: Joi.string().trim(),
+    logo: Joi.object({
+      public_id: Joi.string(),
+      url: Joi.string()
+    }).optional(),
+    thumbnail: Joi.object({
+      public_id: Joi.string(),
+      url: Joi.string()
+    }).optional(),
+    productCategory: Joi.array().items(Joi.string()),
     isActive: Joi.boolean().default(true)
   })
 
@@ -31,16 +30,11 @@ const createBrand = async (req, res, next) => {
 const updateBrand = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
-    description: Joi.string().required().trim(),
-    images: Joi.array()
-      .items(
-        Joi.object({
-          public_id: Joi.string(),
-          url: Joi.string()
-        })
-      )
-      .optional(),
-    tags: Joi.array().items(Joi.string()).optional(),
+    description: Joi.string().trim(),
+    logo: Joi.object({
+      public_id: Joi.string(),
+      url: Joi.string()
+    }),
     productCategory: Joi.string().required().trim(),
     isActive: Joi.boolean().default(true)
   })

@@ -23,6 +23,9 @@ var userSchema = new mongoose.Schema(
       type: String,
       default: 'user'
     },
+    phoneNumber: {
+      type: String
+    },
     address: [
       {
         fullName: {

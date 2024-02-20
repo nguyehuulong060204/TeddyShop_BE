@@ -27,21 +27,15 @@ var memberSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    socialMedia: {
-      facebook: String,
-      twitter: String,
-      instagram: String,
-      zalo: String
-    },
+    socialMedia: {},
     status: {
       type: String,
       enum: ['active', 'inactive'],
       default: 'active'
     },
     startWorkingDate: {
-      type: Date,
-      required: true,
-      default: Date.now()
+      type: Date
+      // required: true
     },
     endWorkingDate: {
       type: Date

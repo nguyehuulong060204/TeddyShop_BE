@@ -5,7 +5,7 @@ const createCategory = async (categoryData) => {
 }
 
 const getAllCategory = async () => {
-  return await ProductCategory.find()
+  return await ProductCategory.find().populate('products')
 }
 
 const getCategoryById = async (catId) => {
@@ -20,10 +20,34 @@ const deleteCategory = async (catId) => {
   return await ProductCategory.findByIdAndDelete(catId, { new: true })
 }
 
+const addProductToCategory = async (catId, productId) => {
+  await ProductCategory.findByIdAndUpdate(catId, { $push: { products: productId } })
+
+  const category = await ProductCategory.findById(catId)
+  const productCount = category.products.length
+
+  const updatedCategory = await ProductCategory.findByIdAndUpdate(catId, { totalProduct: productCount }, { new: true })
+
+  return updatedCategory
+}
+
+const deleteProductFromCategory = async (catId, productId) => {
+  await ProductCategory.findByIdAndUpdate(catId, { $pull: { products: productId } })
+
+  const category = await ProductCategory.findById(catId)
+  const productCount = category.products.length
+
+  const updatedCategory = await ProductCategory.findByIdAndUpdate(catId, { totalProduct: productCount }, { new: true })
+
+  return updatedCategory
+}
+
 export const productCatService = {
   createCategory,
   getAllCategory,
   getCategoryById,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  addProductToCategory,
+  deleteProductFromCategory
 }

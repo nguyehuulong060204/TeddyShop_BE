@@ -12,6 +12,9 @@ const createUser = async (userData) => {
   setTimeout(async () => {
     await sendEmail({ receiverEmail: userData?.email, userName: userData?.fullName })
   }, 20000)
+
+  const userName = userData.email.split('@')[0]
+  userData.fullName = userName
   return User.create(userData)
 }
 
@@ -23,6 +26,19 @@ const loginUser = async (email, password) => {
 
   if (user.isBlocked) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Your account has been blocked')
+  }
+
+  return user
+}
+
+const loginAdmin = async (email, password) => {
+  const user = await User.findOne({ email })
+  if (!user || !(await user.isPasswordMatch(password))) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Incorrect email or pssword')
+  }
+
+  if (user.role !== 'admin') {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not an admin')
   }
 
   return user
@@ -49,15 +65,15 @@ const verifyRefreshToken = async (refreshToken) => {
 }
 
 const getAllUsers = async () => {
-  try {
-    return await User.find()
-  } catch (error) {
-    throw new ApiError(StatusCodes.FORBIDDEN, error.message)
-  }
+  return await User.find({ role: 'user' }).select('-password')
 }
 
-const getUserAdmin = async () => {
-  return await User.find({ role: 'admin' })
+const deleteUserById = async (userId) => {
+  return await User.findByIdAndDelete(userId)
+}
+
+const getUsersAdmin = async () => {
+  return await User.find({ role: 'admin' }).select('-password')
 }
 
 const logout = async (userId) => {
@@ -69,7 +85,7 @@ const logout = async (userId) => {
 }
 
 const getUserByid = async (userId) => {
-  return User.findById(userId)
+  return User.findById(userId).select('-password')
 }
 
 const blockUser = async (userId) => {
@@ -89,5 +105,7 @@ export const authService = {
   getUserByid,
   blockUser,
   unBlockUser,
-  getUserAdmin
+  getUsersAdmin,
+  loginAdmin,
+  deleteUserById
 }

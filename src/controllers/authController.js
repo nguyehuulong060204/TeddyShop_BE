@@ -27,6 +27,32 @@ const login = async (req, res, next) => {
     })
 
     res.status(StatusCodes.OK).json({
+      id: user._id,
+      userName: user.fullName,
+      userEmail: user.email,
+      userRole: user.role,
+      userAvatar: user.avatar,
+      token
+    })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const loginAdmin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body
+    const user = await authService.loginAdmin(email, password)
+    const refreshToken = await generateRefreshToken(user?._id)
+    const token = await generateToken(user?._id)
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000 * 7
+    })
+
+    res.status(StatusCodes.OK).json({
+      id: user._id,
       userName: user.fullName,
       userEmail: user.email,
       userRole: user.role,
@@ -59,6 +85,7 @@ const refreshToken = async (req, res, next) => {
     })
 
     res.status(StatusCodes.OK).json({
+      id: user._id,
       userName: user.fullName,
       userEmail: user.email,
       userRole: user.role,
@@ -97,17 +124,33 @@ const logoutUser = async (req, res, next) => {
   }
 }
 
-const getAllUsers = async (req, res, next) => {
+const getUsersAdmin = async (req, res, next) => {
   try {
-    let users
-    const { role } = req.query
-    if (role === 'admin') {
-      users = await authService.getUserAdmin()
-    } else {
-      users = await authService.getAllUsers()
-    }
+    const users = await authService.getUsersAdmin()
 
     res.status(StatusCodes.OK).json({ users })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await authService.getAllUsers()
+
+    res.status(StatusCodes.OK).json({ users })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const deleteUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    validateMongodbId(id)
+    const userDeleted = await authService.deleteUserById(id)
+
+    res.status(StatusCodes.OK).json({ message: 'User deleted', userDeleted })
   } catch (error) {
     next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
@@ -152,10 +195,13 @@ const unBlockUser = async (req, res, next) => {
 export const authController = {
   register,
   login,
+  loginAdmin,
   refreshToken,
-  getAllUsers,
+  getUsersAdmin,
+  getUsers,
   logoutUser,
   getUserById,
   blockUser,
-  unBlockUser
+  unBlockUser,
+  deleteUserById
 }

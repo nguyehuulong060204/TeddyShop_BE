@@ -8,6 +8,8 @@ const Router = express.Router()
 Router.post('/', authMiddleware, isAdmin, brandValidation.createBrand, brandController.createBrand)
 Router.get('/', brandController.getAllBrand)
 Router.get('/:id', brandController.getBrandById)
+Router.put('/addProductToBrand', authMiddleware, isAdmin, brandController.addProductToBrand)
+Router.put('/removeProductFromBrand', authMiddleware, isAdmin, brandController.removeProductToBrand)
 Router.put('/:id', authMiddleware, isAdmin, brandController.updateBrand)
 Router.delete('/:id', authMiddleware, isAdmin, brandController.deleteBrandById)
 
