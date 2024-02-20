@@ -28,7 +28,7 @@ const deleteImages = async (req, res) => {
   try {
     // eslint-disable-next-line no-unused-vars
     const deleted = await cloudinaryDeleteImage(id, 'images')
-    res.json({ message: 'Deleted' })
+    res.json({ message: 'Deleted', id })
   } catch (error) {
     throw new Error(error)
   }

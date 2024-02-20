@@ -16,7 +16,7 @@ const createProduct = async (productData) => {
 }
 
 const getAllProduct = async () => {
-  return await Product.find()
+  return await Product.find().populate('brand', 'name').populate('category', 'name')
 }
 
 const getProductById = async (productId) => {

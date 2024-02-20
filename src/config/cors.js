@@ -7,7 +7,7 @@ import ApiError from '~/utils/ApiError'
 export const corsOptions = {
   origin: function (origin, callback) {
     // cho phép việc gọi API bằng POSTMEN trên môi trường dev
-    if (!origin && env.BUILD_MODE === 'dev') {
+    if (env.BUILD_MODE === 'dev') {
       return callback(null, true)
     }
 

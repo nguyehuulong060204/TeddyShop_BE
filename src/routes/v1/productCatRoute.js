@@ -14,6 +14,8 @@ Router.post(
 )
 Router.get('/', productCategoryController.getAllCategory)
 Router.get('/:id', productCategoryController.getCategoryById)
+Router.put('/addProductToCategory', authMiddleware, isAdmin, productCategoryController.addProductToCategory)
+Router.put('/removeProductFromCategory', authMiddleware, isAdmin, productCategoryController.removeProductFromCategory)
 Router.put(
   '/:id',
   authMiddleware,

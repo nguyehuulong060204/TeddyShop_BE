@@ -12,13 +12,14 @@ var brandSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    images: [
-      {
-        public_id: String,
-        url: String
-      }
-    ],
-    tags: [],
+    logo: {
+      public_id: String,
+      url: String
+    },
+    thumbnail: {
+      public_id: String,
+      url: String
+    },
     isActive: {
       type: Boolean,
       default: true
@@ -29,7 +30,13 @@ var brandSchema = new mongoose.Schema(
         ref: 'ProductCategory'
       }
     ],
-    totalProducts: {
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+      }
+    ],
+    totalProduct: {
       type: Number,
       default: 0
     }

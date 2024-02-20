@@ -57,10 +57,38 @@ const deleteBrandById = async (req, res, next) => {
   }
 }
 
+const addProductToBrand = async (req, res, next) => {
+  try {
+    const { brandId, productId } = req.body
+    validateMongodbId(brandId)
+    validateMongodbId(productId)
+    const updatedBrand = await brandService.addProductToBrand(brandId, productId)
+
+    res.status(StatusCodes.OK).json({ updatedBrand })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const removeProductToBrand = async (req, res, next) => {
+  try {
+    const { brandId, productId } = req.body
+    validateMongodbId(brandId)
+    validateMongodbId(productId)
+    const updatedBrand = await brandService.deleteProductFromBrand(brandId, productId)
+
+    res.status(StatusCodes.OK).json({ updatedBrand })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 export const brandController = {
   createBrand,
   getAllBrand,
   getBrandById,
   updateBrand,
-  deleteBrandById
+  deleteBrandById,
+  addProductToBrand,
+  removeProductToBrand
 }
