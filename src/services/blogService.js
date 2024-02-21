@@ -11,7 +11,10 @@ const createBlog = async (blogData) => {
 }
 
 const getAllBlog = async () => {
-  return await Blog.find().sort({ likes: -1, views: -1 })
+  return await Blog.find()
+    .sort({ likes: -1, views: -1 })
+    .populate('createdBy', 'fullName')
+    .populate('blogCategory', 'name')
 }
 
 const getBlogById = async (blogId) => {

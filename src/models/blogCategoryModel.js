@@ -10,13 +10,7 @@ var blogCategorySchema = new mongoose.Schema(
     },
     description: {
       type: String
-    },
-    images: [
-      {
-        public_id: String,
-        url: String
-      }
-    ]
+    }
   },
   {
     timestamps: true

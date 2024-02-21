@@ -19,9 +19,10 @@ const createEvent = async (req, res, next) => {
         })
       )
       .optional(),
-    tags: Joi.array().items(Joi.string()).optional(),
-    schedules: Joi.string().required().optional,
-    members: Joi.array().items(Joi.string())
+    tag: Joi.string().optional(),
+    members: Joi.array().items(Joi.string()),
+    createdBy: Joi.string().required(),
+    type: Joi.string().required()
   })
 
   await conrrectCondition
@@ -32,7 +33,7 @@ const createEvent = async (req, res, next) => {
     })
 }
 
-const updateEvent = async (req, rex, next) => {
+const updateEvent = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
     description: Joi.string().required().trim(),
@@ -44,13 +45,14 @@ const updateEvent = async (req, rex, next) => {
       .items(
         Joi.object({
           public_id: Joi.string(),
-          url: Joi.string()
+          url: Joi.string(),
+          _id: Joi.string().optional()
         })
       )
       .optional(),
-    tags: Joi.array().items(Joi.string()).optional(),
-    schedules: Joi.string().required().optional,
-    members: Joi.array().items(Joi.string())
+    tag: Joi.string().optional(),
+    members: Joi.array(),
+    type: Joi.string().required()
   })
 
   await conrrectCondition

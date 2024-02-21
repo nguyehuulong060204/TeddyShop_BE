@@ -5,8 +5,8 @@ import { eventValidation } from '~/validations/eventValidation'
 
 const Router = express.Router()
 
-Router.get('/getByDateRange', eventValidation.getEventByDateRange, eventController.getByDateRange)
 Router.post('/', authMiddleware, isAdmin, eventValidation.createEvent, eventController.createEvent)
+Router.get('/getByDateRange', eventValidation.getEventByDateRange, eventController.getByDateRange)
 Router.get('/', eventController.getAllEvent)
 Router.get('/:id', eventController.getEventById)
 Router.put('/:id', authMiddleware, isAdmin, eventValidation.updateEvent, eventController.updateEvent)

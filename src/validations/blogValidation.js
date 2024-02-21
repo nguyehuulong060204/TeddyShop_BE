@@ -7,15 +7,11 @@ const createBlog = async (req, res, next) => {
   const conrrectConditon = Joi.object({
     name: Joi.string().required().trim(),
     content: Joi.string().required().trim(),
-    images: Joi.array()
-      .items(
-        Joi.object({
-          public_id: Joi.string(),
-          url: Joi.string()
-        })
-      )
-      .optional(),
-    tags: Joi.array().items(Joi.string()),
+    thumbnail: Joi.object({
+      public_id: Joi.string(),
+      url: Joi.string()
+    }).optional(),
+    tag: Joi.string(),
     blogCategory: Joi.string().required(),
     createdBy: Joi.string().required()
   })
@@ -32,15 +28,11 @@ const updateBlog = async (req, res, next) => {
   const conrrectConditon = Joi.object({
     name: Joi.string().required().trim(),
     content: Joi.string().required().trim(),
-    images: Joi.array()
-      .items(
-        Joi.object({
-          public_id: Joi.string(),
-          url: Joi.string()
-        })
-      )
-      .optional(),
-    tags: Joi.array().items(Joi.string()),
+    thumbnail: Joi.object({
+      public_id: Joi.string(),
+      url: Joi.string()
+    }).optional(),
+    tag: Joi.string(),
     blogCategory: Joi.string().required(),
     createdBy: Joi.string().required()
   })

@@ -31,23 +31,20 @@ var eventSchema = new mongoose.Schema(
       type: Date,
       required: true
     },
-    tags: [
-      {
-        type: String,
-        required: true
-      }
-    ],
+    tag: {
+      type: String,
+      required: true
+    },
     images: [
       {
-        type: String,
-        required: true
+        public_id: String,
+        url: String
       }
     ],
     schedules: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Schedule',
-        required: true
+        ref: 'Schedule'
       }
     ],
     members: [
@@ -56,7 +53,17 @@ var eventSchema = new mongoose.Schema(
         ref: 'Member',
         required: true
       }
-    ]
+    ],
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: ['Sự kiện', 'Cuộc thi', 'Hội thảo', 'Khác'] //  Loại sự kiện
+    }
   },
   {
     timestamps: true

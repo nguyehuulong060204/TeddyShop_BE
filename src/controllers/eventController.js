@@ -59,6 +59,7 @@ const getByDateRange = async (req, res, next) => {
 const updateEvent = async (req, res, next) => {
   try {
     const { id } = req.params
+    validateMongodbId(id)
     const updateEvent = await eventService.updateEvent(id, req.body)
 
     res.status(StatusCodes.OK).json({ updateEvent })

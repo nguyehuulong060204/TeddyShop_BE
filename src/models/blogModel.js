@@ -15,13 +15,9 @@ var blogSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    images: [
-      {
-        public_id: String,
-        url: String
-      }
-    ],
-    tags: [String],
+    tag: {
+      type: String
+    },
     views: {
       type: Number,
       default: 0
@@ -45,6 +41,14 @@ var blogSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
+    },
+    thumbnail: {
+      public_id: String,
+      url: String
+    },
+    createdTime: {
+      type: Date,
+      default: new Date()
     }
   },
   {
