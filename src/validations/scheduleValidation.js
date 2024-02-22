@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
 
 const createSchedule = async (req, res, next) => {
-  console.log(req.body)
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
     time: Joi.string().required(),
