@@ -4,11 +4,11 @@ import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
 
 const createSchedule = async (req, res, next) => {
+  console.log(req.body)
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
-    description: Joi.string().required(),
-    time: Joi.date().required(),
-    tags: Joi.array().items(Joi.string()).optional(),
+    time: Joi.string().required(),
+    date: Joi.string().required(),
     images: Joi.array()
       .items(
         Joi.object({
@@ -17,7 +17,8 @@ const createSchedule = async (req, res, next) => {
         })
       )
       .optional(),
-    eventId: Joi.string().required()
+    eventId: Joi.string().required(),
+    type: Joi.array().items(Joi.string()).required()
   })
 
   await conrrectCondition

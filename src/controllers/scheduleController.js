@@ -24,11 +24,16 @@ const getScheduleById = async (req, res, next) => {
   }
 }
 
-const getScheduleByEvent = async (req, res, next) => {
+const getAllSchedule = async (req, res, next) => {
   try {
     const { event } = req.query
-    validateMongodbId(event)
-    const schedules = await scheduleService.getAllScheduleByEvent(event)
+    let schedules
+    if (event) {
+      validateMongodbId(event)
+      schedules = await scheduleService.getAllScheduleByEvent(event)
+    } else {
+      schedules = await scheduleService.getAllSchedule()
+    }
 
     res.status(StatusCodes.OK).json({ schedules })
   } catch (error) {
@@ -60,7 +65,7 @@ const deleteScheduleById = async (req, res, next) => {
 
 export const scheduleController = {
   createSchedule,
-  getScheduleByEvent,
+  getAllSchedule,
   getScheduleById,
   updateSchedule,
   deleteScheduleById

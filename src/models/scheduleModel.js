@@ -10,22 +10,21 @@ var scheduleSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  date: {
+    type: Date,
+    required: true
+  },
   time: {
     type: Date,
     required: true
   },
-  tags: [
-    {
-      type: String,
-      required: true
-    }
-  ],
   images: [
     {
-      type: String,
-      required: true
+      public_id: String,
+      url: String
     }
   ],
+  type: [],
   eventId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event',

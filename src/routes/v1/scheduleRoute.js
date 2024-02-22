@@ -6,7 +6,7 @@ import { scheduleValidation } from '~/validations/scheduleValidation'
 const Router = express.Router()
 
 Router.post('/', authMiddleware, isAdmin, scheduleValidation.createSchedule, scheduleController.createSchedule)
-Router.get('/', scheduleController.getScheduleByEvent)
+Router.get('/', scheduleController.getAllSchedule)
 Router.get('/:id', scheduleController.getScheduleById)
 Router.put('/:id', authMiddleware, scheduleValidation.createSchedule, scheduleController.createSchedule)
 Router.delete('/:id', authMiddleware, isAdmin, scheduleController.deleteScheduleById)
