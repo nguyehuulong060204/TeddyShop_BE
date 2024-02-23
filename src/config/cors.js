@@ -3,24 +3,27 @@ import { env } from '~/config/environment'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
 
-// config cors
+// Cấu hình CORS
 export const corsOptions = {
   origin: function (origin, callback) {
-    // cho phép việc gọi API bằng POSTMEN trên môi trường dev
+    // Cho phép gọi API bằng POSTMAN trên môi trường dev
     if (env.BUILD_MODE === 'dev') {
       return callback(null, true)
     }
 
-    // kiểm tra xem origin có phải là domein được chấp nhận hay không
+    // Kiểm tra xem origin có phải là domain được chấp nhận hay không
     if (WHITELIST_DOMAINS.includes(origin)) {
       return callback(null, true)
     }
 
-    // nếu không phải thì trả về lỗi
-    return callback(new ApiError(StatusCodes.FORBIDDEN, `${origin} not allowrd by CORS Policy.`))
+    // Nếu không phải, trả về lỗi
+    callback(new ApiError(StatusCodes.FORBIDDEN, `${origin} is not allowed by CORS Policy.`))
   },
   optionsSuccessStatus: StatusCodes.OK,
 
-  // cors sẽ cho phép nhận cookies từ qequest
-  credential: true
+  // CORS cho phép nhận cookies từ request
+  credentials: true,
+
+  // Header "set-cookie" được phép truy cập từ phía client
+  exposedHeaders: ['set-cookie']
 }

@@ -1,31 +1,46 @@
 import { StatusCodes } from 'http-status-codes'
 import User from '~/models/userModel'
 import ApiError from '~/utils/ApiError'
-import jwt from 'jsonwebtoken'
-import { env } from '~/config/environment'
 import { sendEmail } from './emailService'
 
 const createUser = async (userData) => {
-  if (await User.isEmailTaken(userData.email)) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Email already taken')
+  const existingUser = await User.findOne({ email: userData.email })
+
+  if (existingUser) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Email đã tồi tại, vui lòng thử lại!!')
   }
+
   setTimeout(async () => {
     await sendEmail({ receiverEmail: userData?.email, userName: userData?.fullName })
   }, 20000)
 
-  const userName = userData.email.split('@')[0]
-  userData.fullName = userName
-  return User.create(userData)
+  const user = await User.create(userData)
+
+  return {
+    id: user.id,
+    email: user.email,
+    fullName: user.fullName
+  }
+}
+
+const updateRefreshToken = async (userId, refreshToken) => {
+  return await User.findByIdAndUpdate(userId, { refreshToken }, { new: true })
 }
 
 const loginUser = async (email, password) => {
   const user = await User.findOne({ email })
-  if (!user || !(await user.isPasswordMatch(password))) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Incorrect email or pssword')
+
+  if (!user) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Tài khoản không tồn tại!!')
+  }
+
+  const isPasswordCorrect = await user.isPasswordMatch(password)
+  if (!isPasswordCorrect) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Mật khẩu không đúng!!')
   }
 
   if (user.isBlocked) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Your account has been blocked')
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Tài khoản của bạn đã bị khóa')
   }
 
   return user
@@ -46,16 +61,9 @@ const loginAdmin = async (email, password) => {
 
 const verifyRefreshToken = async (refreshToken) => {
   try {
-    const decoded = jwt.verify(refreshToken, env.REFRESH_JWT_SECRET)
-    const user = await User.findOne({ _id: decoded.id })
+    const user = await User.findOne({ refreshToken }) // Tìm người dùng bằng refreshToken
     if (!user) {
       throw new ApiError(StatusCodes.FORBIDDEN, 'User not found')
-    }
-
-    // check if the refresh token exist in the user's refreshtokens array
-    const tokenExists = user.refreshTokens.some((tokenObj) => tokenObj.token === refreshToken)
-    if (!tokenExists) {
-      throw new ApiError(StatusCodes.FORBIDDEN, 'Invalid refresh token')
     }
 
     return user
@@ -78,7 +86,7 @@ const getUsersAdmin = async () => {
 
 const logout = async (userId) => {
   try {
-    return User.findOneAndUpdate({ _id: userId }, { refreshTokens: [] })
+    return User.findOneAndUpdate({ _id: userId }, { refreshTokens: '' })
   } catch (error) {
     throw new ApiError(StatusCodes.FORBIDDEN, error.message)
   }
@@ -107,5 +115,6 @@ export const authService = {
   unBlockUser,
   getUsersAdmin,
   loginAdmin,
-  deleteUserById
+  deleteUserById,
+  updateRefreshToken
 }

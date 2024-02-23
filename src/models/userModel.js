@@ -59,13 +59,9 @@ var userSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    refreshTokens: [
-      {
-        token: {
-          type: String
-        }
-      }
-    ],
+    refreshToken: {
+      type: String
+    },
     passwordChangeAt: Date,
     passwordResetToken: String,
     passwordResetExpores: String,

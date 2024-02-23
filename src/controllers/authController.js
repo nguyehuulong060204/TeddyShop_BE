@@ -7,10 +7,12 @@ import validateMongodbId from '~/utils/validateMongodbId'
 
 const register = async (req, res, next) => {
   try {
-    const user = await authService.createUser(req.body)
+    const { email, password, fullName } = req.body
+    const user = await authService.createUser({ email, password, fullName })
+
     res.status(StatusCodes.CREATED).json({ user })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+    next(error)
   }
 }
 
@@ -20,6 +22,7 @@ const login = async (req, res, next) => {
     const user = await authService.loginUser(email, password)
     const refreshToken = await generateRefreshToken(user?._id)
     const token = await generateToken(user?._id)
+    await authService.updateRefreshToken(user?._id, refreshToken)
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -30,12 +33,11 @@ const login = async (req, res, next) => {
       id: user._id,
       userName: user.fullName,
       userEmail: user.email,
-      userRole: user.role,
       userAvatar: user.avatar,
       token
     })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+    next(error)
   }
 }
 
@@ -45,6 +47,7 @@ const loginAdmin = async (req, res, next) => {
     const user = await authService.loginAdmin(email, password)
     const refreshToken = await generateRefreshToken(user?._id)
     const token = await generateToken(user?._id)
+    await authService.updateRefreshToken(user?._id, refreshToken)
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -60,7 +63,7 @@ const loginAdmin = async (req, res, next) => {
       token
     })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+    next(error)
   }
 }
 
