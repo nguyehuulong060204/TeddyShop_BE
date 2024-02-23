@@ -41,7 +41,9 @@ var productSchema = new mongoose.Schema(
     // số lượng có sẵn
     quantityAvailable: {
       type: Number,
-      default: 0
+      default: function () {
+        return this.quantity - this.quantitySold
+      }
     },
     // bảo hành: ví dụ 6 tháng, 12 tháng,...
     warranty: {
