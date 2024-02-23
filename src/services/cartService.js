@@ -5,11 +5,14 @@ const createCart = async (cartData) => {
 }
 
 const getCartByUserId = async (userId) => {
-  return await Cart.find({ userId: userId })
+  return await Cart.find({ userId: userId }).populate('productId', 'name price imageUrl priceSale _id category brand')
 }
 
 const getCartByProductId = async (productId) => {
-  return await Cart.find({ productId: productId })
+  return await Cart.find({ productId: productId }).populate(
+    'productId',
+    'name price imageUrl priceSale _id category brand'
+  )
 }
 
 const updateCart = async (cartId, cartData) => {
