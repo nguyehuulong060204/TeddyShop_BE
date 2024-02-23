@@ -12,6 +12,7 @@ import { blogRouter } from './blogRoute'
 import { feedbackRouter } from './feedbackRoute'
 import { productRoute } from './productRoute'
 import { orderRouter } from './orderRoute'
+import { cartRouter } from './cartRoute'
 
 const Router = express.Router()
 
@@ -33,5 +34,6 @@ Router.use('/schedule', scheduleRouter)
 Router.use('/feedback', feedbackRouter)
 Router.use('/upload', uploadRouter)
 Router.use('/order', orderRouter)
+Router.use('/cart', cartRouter)
 
 export const APIs_V1 = Router
