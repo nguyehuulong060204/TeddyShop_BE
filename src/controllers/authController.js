@@ -67,6 +67,28 @@ const loginAdmin = async (req, res, next) => {
   }
 }
 
+const getProfile = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    const user = await authService.getProfile(_id)
+
+    res.status(StatusCodes.OK).json({ user })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const updateProfile = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    const user = await authService.updateProfile(_id, req.body)
+
+    res.status(StatusCodes.OK).json({ user })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 const refreshToken = async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refreshToken
@@ -206,5 +228,7 @@ export const authController = {
   getUserById,
   blockUser,
   unBlockUser,
-  deleteUserById
+  deleteUserById,
+  getProfile,
+  updateProfile
 }

@@ -59,6 +59,25 @@ const loginAdmin = async (email, password) => {
   return user
 }
 
+const getProfile = async (userId) => {
+  return await User.findById(userId).select('-password')
+}
+
+const updateProfile = async (userId, userData) => {
+  return await User.fundByIdAndUpdate(
+    userId,
+    {
+      fullName: userData?.fullName,
+      phoneNumber: userData?.phoneNumber,
+      birthday: userData?.birthday,
+      gender: userData?.gender,
+      address: userData?.address,
+      avatar: userData?.avatar
+    },
+    { new: true }
+  )
+}
+
 const verifyRefreshToken = async (refreshToken) => {
   try {
     const user = await User.findOne({ refreshToken }) // Tìm người dùng bằng refreshToken
@@ -116,5 +135,7 @@ export const authService = {
   getUsersAdmin,
   loginAdmin,
   deleteUserById,
-  updateRefreshToken
+  updateRefreshToken,
+  getProfile,
+  updateProfile
 }
