@@ -24,6 +24,11 @@ var orderSchema = new mongoose.Schema(
         type: String
       }
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     orderItems: [
       {
         product: {
@@ -59,7 +64,7 @@ var orderSchema = new mongoose.Schema(
     },
     totalPriceAfterDiscount: {
       type: String,
-      required: true
+      default: 0
     },
     orderStauts: {
       type: String,

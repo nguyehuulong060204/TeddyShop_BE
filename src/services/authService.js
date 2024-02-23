@@ -60,7 +60,7 @@ const loginAdmin = async (email, password) => {
 }
 
 const getProfile = async (userId) => {
-  return await User.findById(userId).select('-password')
+  return await User.findById(userId).select('-password -refreshToken')
 }
 
 const updateProfile = async (userId, userData) => {

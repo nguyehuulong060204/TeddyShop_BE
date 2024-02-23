@@ -11,6 +11,7 @@ import { scheduleRouter } from './scheduleRoute'
 import { blogRouter } from './blogRoute'
 import { feedbackRouter } from './feedbackRoute'
 import { productRoute } from './productRoute'
+import { orderRouter } from './orderRoute'
 
 const Router = express.Router()
 
@@ -31,5 +32,6 @@ Router.use('/event', eventRouter)
 Router.use('/schedule', scheduleRouter)
 Router.use('/feedback', feedbackRouter)
 Router.use('/upload', uploadRouter)
+Router.use('/order', orderRouter)
 
 export const APIs_V1 = Router
