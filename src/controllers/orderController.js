@@ -13,16 +13,6 @@ const createOrder = async (req, res, next) => {
   }
 }
 
-const getAllOrder = async (req, res, next) => {
-  try {
-    const orders = await orderService.getAllOrder()
-
-    res.status(StatusCodes.OK).json({ orders })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
 const getOrderByUserId = async (req, res, next) => {
   try {
     const { _id: userId } = req.user
@@ -47,10 +37,9 @@ const getOrderById = async (req, res, next) => {
   }
 }
 
-const getOrderByStatus = async (req, res, next) => {
+const getAllOrder = async (req, res, next) => {
   try {
-    const { status } = req.body
-    const orders = await orderService.getOrderByStatus(status)
+    const orders = await orderService.getAllOrder()
 
     res.status(StatusCodes.OK).json({ orders })
   } catch (error) {
@@ -58,23 +47,52 @@ const getOrderByStatus = async (req, res, next) => {
   }
 }
 
-const getOrderByIdAndStatus = async (req, res, next) => {
+const getOrders = async (req, res, next) => {
   try {
-    const { id: orderId } = req.params
-    const { status } = req.body
-    const orders = await orderService.getOrderByIdAndStatus(orderId, status)
+    const { status, orderDate, month } = req.query
 
-    res.status(StatusCodes.OK).json({ orders })
+    if (!status && !orderDate && !month) {
+      // Truy vấn tất cả đơn hàng
+      const orders = await orderService.getAllOrder()
+      return res.status(StatusCodes.OK).json({ orders })
+    }
+
+    let filteredOrders = []
+
+    if (status) {
+      const decodedStatus = decodeURIComponent(status)
+      const ordersByStatus = await orderService.getOrderByStatus(decodedStatus)
+      filteredOrders = ordersByStatus
+    }
+
+    if (orderDate) {
+      const ordersByDate = await orderService.getOrderByOrderDate(orderDate)
+      filteredOrders = filteredOrders.filter((order) => {
+        return ordersByDate.includes(order) // Giữ các đơn hàng có trong danh sách trên
+      })
+    }
+
+    if (month) {
+      const ordersByMonth = await orderService.getOrderByMonth(month)
+      filteredOrders = filteredOrders.filter((order) => {
+        return ordersByMonth.includes(order) // Giữ các đơn hàng có trong danh sách trên
+      })
+    }
+
+    // Loại bỏ các đơn hàng trùng lặp
+    const uniqueOrders = Array.from(new Set(filteredOrders))
+
+    res.status(StatusCodes.OK).json({ orders: uniqueOrders })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error from server, please try again'))
   }
 }
 
 const updateOrderStatus = async (req, res, next) => {
   try {
     const { id } = req.params
-    const { orderStauts } = req.body
-    const updatedStatus = await orderService.updateStatus(id, orderStauts)
+    const { orderStatus } = req.body
+    const updatedStatus = await orderService.updateStatus(id, orderStatus)
 
     res.status(StatusCodes.OK).json({ updatedStatus })
   } catch (error) {
@@ -98,8 +116,7 @@ export const orderController = {
   getAllOrder,
   getOrderByUserId,
   getOrderById,
-  getOrderByStatus,
-  getOrderByIdAndStatus,
+  getOrders,
   updateOrder,
   updateOrderStatus
 }

@@ -20,20 +20,30 @@ const getOrderById = async (orderId) => {
 }
 
 const getOrderByStatus = async (orderStatus) => {
-  return await Order.find({ orderStauts: orderStatus })
+  return await Order.find({ orderStatus: orderStatus })
     .populate('orderItems.product', 'name')
     .populate('user', 'fullName')
     .sort({ orderDate: -1 })
 }
 
 const getOrderByIdAndStatus = async (orderId, orderStatus) => {
-  return await Order.find({ _id: orderId, orderStauts: orderStatus })
+  return await Order.find({ _id: orderId, orderStatus: orderStatus })
     .populate('user', 'fullName')
     .populate('orderItems.product', 'name')
 }
 
+const getOrderByOrderDate = async (orderDate) => {
+  return await Order.find({ orderDate: orderDate }).populate('orderItems.product', 'name').populate('user', 'fullName')
+}
+
+const getOrderByMonth = async (month) => {
+  return await Order.find({ orderDate: { $month: month } })
+    .populate('orderItems.product', 'name')
+    .populate('user', 'fullName')
+}
+
 const updateStatus = async (orderId, status) => {
-  return await Order.findByIdAndUpdate(orderId, { orderStauts: status }, { new: true })
+  return await Order.findByIdAndUpdate(orderId, { orderStatus: status }, { new: true })
 }
 
 const updateOrder = async (orderId, orderData) => {
@@ -47,6 +57,8 @@ export const orderService = {
   getOrderByUserId,
   getOrderByStatus,
   getOrderByIdAndStatus,
+  getOrderByOrderDate,
+  getOrderByMonth,
   updateStatus,
   updateOrder
 }

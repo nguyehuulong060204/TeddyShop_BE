@@ -25,8 +25,8 @@ var feedbackSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'pending',
-      enum: ['pending', 'approved', 'rejected']
+      default: 'Đang chờ xử lý',
+      enum: ['Đang chờ xử lý', 'Đang xử lý', 'Đã hoàn thành', 'Đã hủy', 'Đã gửi mail', 'Đã xác nhận']
     }
   },
   {

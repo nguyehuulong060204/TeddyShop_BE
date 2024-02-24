@@ -10,7 +10,7 @@ const createOrder = async (req, res, next) => {
       address: Joi.string().required().trim(),
       city: Joi.string().required().trim(),
       phoneNumber: Joi.string().required().trim(),
-      other: Joi.string().trim()
+      other: Joi.optional()
     }),
     user: Joi.string().required().trim(),
     orderItems: Joi.array()
@@ -45,7 +45,7 @@ const updateOrder = async (req, res, next) => {
       address: Joi.string().trim(),
       city: Joi.string().trim(),
       phoneNumber: Joi.string().trim(),
-      other: Joi.string().trim()
+      other: Joi.optional()
     }),
     user: Joi.string().trim(),
     orderItems: Joi.array().items(

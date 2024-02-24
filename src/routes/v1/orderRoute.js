@@ -6,9 +6,7 @@ import { orderValidation } from '~/validations/orderValidation'
 const Router = express.Router()
 
 Router.post('/', authMiddleware, orderValidation.createOrder, orderController.createOrder)
-Router.get('/status', authMiddleware, orderController.getOrderByStatus)
-Router.get('/:id/status', authMiddleware, isAdmin, orderController.getOrderByIdAndStatus)
-Router.get('/', authMiddleware, isAdmin, orderController.getAllOrder)
+Router.get('/', authMiddleware, isAdmin, orderController.getOrders)
 Router.get('/user', authMiddleware, orderController.getOrderByUserId)
 Router.get('/:id', authMiddleware, orderController.getOrderById)
 Router.put('/:id/status', authMiddleware, isAdmin, orderController.updateOrderStatus)

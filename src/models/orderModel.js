@@ -66,10 +66,10 @@ var orderSchema = new mongoose.Schema(
       type: String,
       default: 0
     },
-    orderStauts: {
+    orderStatus: {
       type: String,
       default: 'Chờ xác nhận',
-      enum: ['Chờ xác nhận', 'Đang giao hàng', 'Đã giao hàng']
+      enum: ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã giao hàng', 'Giao hàng thành công']
     },
     month: {
       type: String,

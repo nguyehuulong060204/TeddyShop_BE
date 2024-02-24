@@ -104,17 +104,6 @@ const updateProductQuantityWhenBuy = async (req, res, next) => {
   }
 }
 
-const updateProductQuantityWhenAddToCart = async (req, res, next) => {
-  try {
-    const { productId, quantityPurchased } = req.body
-    const updatedQuantity = await productService.updateProductQuantityWhenAddToCart(productId, quantityPurchased)
-
-    res.status(StatusCodes.OK).json({ updatedQuantity })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
 // Price
 const addPriceToProduct = async (req, res, next) => {
   try {
@@ -171,7 +160,6 @@ export const productController = {
   getProductsByTag,
   updateProduct,
   updateProductQuantityWhenBuy,
-  updateProductQuantityWhenAddToCart,
   deleteProduct,
   addPriceToProduct,
   updatePriceByProductId,

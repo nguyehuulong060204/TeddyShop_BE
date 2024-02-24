@@ -12,12 +12,6 @@ Router.get('/tags', productController.getProductsByTag)
 Router.get('/', productController.getAllProduct)
 Router.get('/:id', productController.getProductById)
 Router.put('/buy', authMiddleware, productValidation.updateQuantity, productController.updateProductQuantityWhenBuy)
-Router.put(
-  '/cart',
-  authMiddleware,
-  productValidation.updateQuantity,
-  productController.updateProductQuantityWhenAddToCart
-)
 Router.put('/:id', authMiddleware, isAdmin, productValidation.updateProduct, productController.updateProduct)
 Router.delete('/:id', authMiddleware, isAdmin, productController.deleteProduct)
 

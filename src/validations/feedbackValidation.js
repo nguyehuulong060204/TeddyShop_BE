@@ -20,7 +20,10 @@ const createFeedback = async (req, res, next) => {
 
 const updateFeedbackStatus = async (req, res, next) => {
   const conrrectCondition = Joi.object({
-    status: Joi.string().valid('pending', 'approved', 'rejected').required().trim()
+    status: Joi.string()
+      .valid('Đang chờ xử lý', 'Đang xử lý', 'Đã hoàn thành', 'Đã hủy', 'Đã gửi mail', 'Đã xác nhận')
+      .required()
+      .trim()
   })
 
   await conrrectCondition

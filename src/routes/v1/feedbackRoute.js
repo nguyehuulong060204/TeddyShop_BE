@@ -7,6 +7,7 @@ const Router = express.Router()
 
 Router.post('/', authMiddleware, feedbackValidation.createFeedback, feedbackController.createFeedback)
 Router.get('/', authMiddleware, isAdmin, feedbackController.getAllFeedBack)
+Router.get('/:id', authMiddleware, isAdmin, feedbackController.getFeedbackById)
 Router.put(
   '/:id',
   authMiddleware,

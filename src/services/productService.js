@@ -81,23 +81,6 @@ const updateProductQuantityWhenBuy = async (productId, quantityPurchased) => {
   )
 }
 
-// update khi người dùng thêm sản phẩm vào giỏ hàng
-const updateProductQuantityWhenAddToCart = async (productId, quantityPurchased) => {
-  const product = await Product.findById(productId)
-
-  const quantity = product.quantity - quantityPurchased
-  const quantityAvailable = product.quantity - quantityPurchased
-
-  return Product.findByIdAndUpdate(
-    productId,
-    {
-      quantity,
-      quantityAvailable
-    },
-    { new: true }
-  )
-}
-
 const updateProduct = async (productId, productData) => {
   const newProductData = {
     ...productData,
@@ -156,7 +139,6 @@ export const productService = {
   getProductsByTag,
   updateProduct,
   updateProductQuantityWhenBuy,
-  updateProductQuantityWhenAddToCart,
   deleteProduct,
   searchProductByName,
   getBestSellingProducts,

@@ -28,6 +28,17 @@ const getAllFeedBack = async (req, res, next) => {
   }
 }
 
+const getFeedbackById = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const feedback = await feedbackService.getFeelbackById(id)
+
+    res.status(StatusCodes.OK).json({ feedback })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 const updateFeedbackStatus = async (req, res, next) => {
   try {
     const { id } = req.params
@@ -44,5 +55,6 @@ const updateFeedbackStatus = async (req, res, next) => {
 export const feedbackController = {
   createFeedback,
   getAllFeedBack,
-  updateFeedbackStatus
+  updateFeedbackStatus,
+  getFeedbackById
 }
