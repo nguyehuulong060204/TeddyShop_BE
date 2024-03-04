@@ -5,7 +5,7 @@ const createCategory = async (categoryData) => {
 }
 
 const getAllCategory = async () => {
-  return await ProductCategory.find().populate('products')
+  return await ProductCategory.find().sort({ totalProduct: -1 }).select('name totalProduct tags slogan _id')
 }
 
 const getCategoryById = async (catId) => {

@@ -67,6 +67,32 @@ const loginAdmin = async (req, res, next) => {
   }
 }
 
+const logoutUser = async (req, res, next) => {
+  try {
+    const cookie = req.cookies
+    if (!cookie.refreshToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'No refresh token in Cookies')
+    const refreshToken = cookie.refreshToken
+    const user = await authService.verifyRefreshToken(refreshToken)
+
+    if (!user) {
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true
+      })
+      return res.status(StatusCodes.FORBIDDEN)
+    }
+    await authService.logout(user._id)
+
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: true
+    })
+    res.status(StatusCodes.OK).json({ message: 'Logout successfully' })
+  } catch (error) {
+    next()
+  }
+}
+
 const getProfile = async (req, res, next) => {
   try {
     const { _id } = req.user
@@ -118,32 +144,6 @@ const refreshToken = async (req, res, next) => {
       token,
       refreshToken: newRefreshToken
     })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
-const logoutUser = async (req, res, next) => {
-  try {
-    const cookie = req.cookies
-    if (!cookie?.refreshToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'No refresh token in Cookies')
-    const refreshToken = cookie.refreshToken
-    const user = await authService.verifyRefreshToken(refreshToken)
-
-    if (!user) {
-      res.clearCookie('refreshToken', {
-        httpOnly: true,
-        secure: true
-      })
-      return res.status(StatusCodes.FORBIDDEN)
-    }
-    await authService.logout(user._id)
-
-    res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: true
-    })
-    res.status(StatusCodes.OK).json({ message: 'Logout successfully' })
   } catch (error) {
     next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }

@@ -9,7 +9,7 @@ const getAllBrand = async () => {
 }
 
 const getBrandById = async (brandId) => {
-  return await Brand.findById(brandId)
+  return (await Brand.findById(brandId)).populate('products')
 }
 
 const updateBrand = async (brandId, brandData) => {

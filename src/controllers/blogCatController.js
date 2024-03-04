@@ -5,9 +5,9 @@ import validateMongodbId from '~/utils/validateMongodbId'
 
 const createCategory = async (req, res, next) => {
   try {
-    const productCat = await blogCatService.createCategory(req.body)
+    const blogCat = await blogCatService.createCategory(req.body)
 
-    res.status(StatusCodes.OK).json({ productCat })
+    res.status(StatusCodes.OK).json({ blogCat })
   } catch (error) {
     next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
@@ -15,9 +15,9 @@ const createCategory = async (req, res, next) => {
 
 const getAllCategory = async (req, res, next) => {
   try {
-    const productCategories = await blogCatService.getAllCategory()
+    const blogCategories = await blogCatService.getAllCategory()
 
-    res.status(StatusCodes.OK).json({ productCategories })
+    res.status(StatusCodes.OK).json({ blogCategories })
   } catch (error) {
     next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }

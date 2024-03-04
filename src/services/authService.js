@@ -7,7 +7,7 @@ const createUser = async (userData) => {
   const existingUser = await User.findOne({ email: userData.email })
 
   if (existingUser) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Email đã tồi tại, vui lòng thử lại!!')
+    throw new ApiError(StatusCodes.CONFLICT, 'Email đã tồi tại, vui lòng thử lại!!')
   }
 
   setTimeout(async () => {
@@ -31,16 +31,16 @@ const loginUser = async (email, password) => {
   const user = await User.findOne({ email })
 
   if (!user) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Tài khoản không tồn tại!!')
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Tài khoản không tồn tại!!')
   }
 
   const isPasswordCorrect = await user.isPasswordMatch(password)
   if (!isPasswordCorrect) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Mật khẩu không đúng!!')
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Mật khẩu không đúng!!')
   }
 
   if (user.isBlocked) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Tài khoản của bạn đã bị khóa')
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Tài khoản của bạn đã bị khóa')
   }
 
   return user
@@ -105,7 +105,7 @@ const getUsersAdmin = async () => {
 
 const logout = async (userId) => {
   try {
-    return User.findOneAndUpdate({ _id: userId }, { refreshTokens: '' })
+    return User.findOneAndUpdate({ _id: userId }, { refreshToken: '' })
   } catch (error) {
     throw new ApiError(StatusCodes.FORBIDDEN, error.message)
   }

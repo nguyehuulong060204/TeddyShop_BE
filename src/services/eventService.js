@@ -11,11 +11,11 @@ const createEvent = async (eventData) => {
 }
 
 const getAllEvent = async () => {
-  return await Event.find().populate('members')
+  return await Event.find().sort({ time: 1 })
 }
 
 const getEventById = async (eventId) => {
-  return await Event.findById(eventId)
+  return await Event.findById(eventId).populate('members')
 }
 
 // lấy sự kiện theo tên

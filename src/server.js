@@ -16,9 +16,9 @@ const app = express()
 app.use(cors(corsOptions))
 app.use(helmet())
 app.use(morgan('dev'))
+app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cookieParser())
 
 // connect to mongodb
 dbConnection()

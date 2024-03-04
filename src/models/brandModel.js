@@ -8,6 +8,10 @@ var brandSchema = new mongoose.Schema(
       required: true,
       unique: true
     },
+    slogan: {
+      type: String,
+      required: true
+    },
     description: {
       type: String,
       required: true

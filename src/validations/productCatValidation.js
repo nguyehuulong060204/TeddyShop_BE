@@ -7,7 +7,8 @@ const createProCat = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
     description: Joi.string().trim().optional(),
-    tags: Joi.array().items(Joi.string().trim()).optional()
+    tags: Joi.array().items(Joi.string().trim()).optional(),
+    slogan: Joi.string().trim().optional()
   })
 
   await conrrectCondition
@@ -22,7 +23,8 @@ const updateProCat = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     name: Joi.string().required().trim(),
     description: Joi.string().trim().optional(),
-    tags: Joi.array().items(Joi.string().trim()).optional()
+    tags: Joi.array().items(Joi.string().trim()).optional(),
+    slogan: Joi.string().trim().optional()
   })
 
   await conrrectCondition

@@ -15,6 +15,10 @@ var blogSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    description: {
+      type: String,
+      required: true
+    },
     tag: {
       type: String
     },

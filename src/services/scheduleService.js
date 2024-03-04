@@ -5,7 +5,7 @@ const createSchedule = async (scheduleData) => {
 }
 
 const getAllScheduleByEvent = async (eventId) => {
-  return await Schedule.find({ eventId: eventId }).populate('eventId', 'name')
+  return await Schedule.find({ eventId: eventId }).sort({ date: 1 })
 }
 
 const getAllSchedule = async () => {

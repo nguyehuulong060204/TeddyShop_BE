@@ -12,6 +12,9 @@ var productCategorySchema = new mongoose.Schema(
       type: String,
       require: true
     },
+    slogan: {
+      type: String
+    },
     tags: [],
     isActive: {
       type: Boolean,

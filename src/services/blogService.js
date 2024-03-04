@@ -19,10 +19,12 @@ const getAllBlog = async () => {
 
 const getBlogById = async (blogId) => {
   return await Blog.findOneAndUpdate({ _id: blogId }, { $inc: { views: 1 } }, { new: true })
+    .populate('createdBy', 'fullName')
+    .populate('blogCategory', 'name')
 }
 
 const getBlogsByCategory = async (categoryId) => {
-  return await Blog.find({ blogCategory: categoryId }).sort({ createdAd: -1 })
+  return await Blog.find({ blogCategory: categoryId }).sort({ createdAd: -1 }).populate('blogCategory', 'name')
 }
 
 const likeBlog = async (blogId, userId) => {

@@ -22,8 +22,8 @@ export const corsOptions = {
   optionsSuccessStatus: StatusCodes.OK,
 
   // CORS cho phép nhận cookies từ request
-  credentials: true,
+  credentials: true
 
   // Header "set-cookie" được phép truy cập từ phía client
-  exposedHeaders: ['set-cookie']
+  // exposedHeaders: ['set-cookie']
 }
