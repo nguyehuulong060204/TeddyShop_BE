@@ -64,14 +64,12 @@ const getProfile = async (userId) => {
 }
 
 const updateProfile = async (userId, userData) => {
-  return await User.fundByIdAndUpdate(
+  return await User.findByIdAndUpdate(
     userId,
     {
       fullName: userData?.fullName,
       phoneNumber: userData?.phoneNumber,
-      birthday: userData?.birthday,
       gender: userData?.gender,
-      address: userData?.address,
       avatar: userData?.avatar
     },
     { new: true }

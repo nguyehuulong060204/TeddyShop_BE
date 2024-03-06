@@ -27,6 +27,10 @@ const getBlogsByCategory = async (categoryId) => {
   return await Blog.find({ blogCategory: categoryId }).sort({ createdAd: -1 }).populate('blogCategory', 'name')
 }
 
+const getBlogsByTag = async (blogTag) => {
+  return await Blog.find({ tag: blogTag }).sort({ views: -1 })
+}
+
 const likeBlog = async (blogId, userId) => {
   const blog = await Blog.findById(blogId)
 
@@ -75,6 +79,7 @@ export const blogService = {
   createBlog,
   getAllBlog,
   getBlogById,
+  getBlogsByTag,
   updateBlog,
   likeBlog,
   searchBlogByName,

@@ -65,6 +65,18 @@ var userSchema = new mongoose.Schema(
     passwordChangeAt: Date,
     passwordResetToken: String,
     passwordResetExpores: String,
+    favoriteProducts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+      }
+    ],
+    faviriteBlogs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog'
+      }
+    ],
     isEmailVerified: {
       type: Boolean,
       default: false

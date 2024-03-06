@@ -47,17 +47,6 @@ const getAllProduct = async (req, res, next) => {
   }
 }
 
-const getProductByPriceRange = async (req, res, next) => {
-  try {
-    const { minPrice, maxPrice } = req.query
-    const products = await productService.getProductByPriceRange(minPrice, maxPrice)
-
-    res.status(StatusCodes.OK).json({ products })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
 const getProductsByTag = async (req, res, next) => {
   try {
     const { tag } = req.query
@@ -93,6 +82,28 @@ const deleteProduct = async (req, res, next) => {
   }
 }
 
+const updateProductPrice = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const updatedProduct = await productService.updateProductPrice(id, req.body)
+
+    res.status(StatusCodes.OK).json({ updatedProduct })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const deleteProductPrice = async (req, res, next) => {
+  try {
+    const { id, attributesId } = req.params
+    const updatedProduct = await productService.deleteProductPrice(id, attributesId)
+
+    res.status(StatusCodes.OK).json({ updatedProduct })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 const updateProductQuantityWhenBuy = async (req, res, next) => {
   try {
     const { productId, quantityPurchased } = req.body
@@ -104,64 +115,14 @@ const updateProductQuantityWhenBuy = async (req, res, next) => {
   }
 }
 
-// Price
-const addPriceToProduct = async (req, res, next) => {
-  try {
-    const price = await productService.addPriceToProduct(req.body)
-
-    res.status(StatusCodes.OK).json({ price })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
-const getPriceByProductId = async (req, res, next) => {
-  try {
-    const { productId } = req.params
-    validateMongodbId(productId)
-
-    const prices = await productService.getPriceByProductId(productId)
-
-    res.status(StatusCodes.OK).json({ prices })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
-const updatePriceByProductId = async (req, res, next) => {
-  try {
-    const { id } = req.params
-    const updatedPrice = await productService.updatePriceByProductId(id, req.body)
-
-    res.status(StatusCodes.OK).json({ updatedPrice })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
-const deletePrice = async (req, res, next) => {
-  try {
-    const { id } = req.params
-    validateMongodbId(id)
-    const deletedPrice = await productService.deletePrice(id)
-
-    res.status(StatusCodes.OK).json({ deletedPrice })
-  } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
-  }
-}
-
 export const productController = {
   createProduct,
-  getPriceByProductId,
   getProductById,
   getAllProduct,
-  getProductByPriceRange,
   getProductsByTag,
   updateProduct,
   updateProductQuantityWhenBuy,
+  updateProductPrice,
   deleteProduct,
-  addPriceToProduct,
-  updatePriceByProductId,
-  deletePrice
+  deleteProductPrice
 }

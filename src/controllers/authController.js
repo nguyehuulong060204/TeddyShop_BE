@@ -34,6 +34,8 @@ const login = async (req, res, next) => {
       userName: user.fullName,
       userEmail: user.email,
       userAvatar: user.avatar,
+      userPhone: user.phoneNumber,
+      userGender: user.gender,
       token
     })
   } catch (error) {
@@ -60,6 +62,8 @@ const loginAdmin = async (req, res, next) => {
       userEmail: user.email,
       userRole: user.role,
       userAvatar: user.avatar,
+      userPhone: user.phoneNumber,
+      userGender: user.gender,
       token
     })
   } catch (error) {
@@ -107,9 +111,17 @@ const getProfile = async (req, res, next) => {
 const updateProfile = async (req, res, next) => {
   try {
     const { _id } = req.user
+    validateMongodbId(_id)
     const user = await authService.updateProfile(_id, req.body)
 
-    res.status(StatusCodes.OK).json({ user })
+    res.status(StatusCodes.OK).json({
+      id: user._id,
+      userName: user.fullName,
+      userEmail: user.email,
+      userAvatar: user.avatar,
+      userPhone: user.phoneNumber,
+      userGender: user.gender
+    })
   } catch (error) {
     next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
   }
