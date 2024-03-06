@@ -1,15 +1,16 @@
 import Product from '~/models/productModel'
-import Price from '~/models/priceModel'
-
 import { slugify } from '~/utils/formatters'
+import { v4 as uuidv4 } from 'uuid'
 
 // update khi người dùng thanh toán thì mới trừ sản phẩm và cập nhật lại trạng thái sản phẩm
 
 // product
 const createProduct = async (productData) => {
+  const productCode = uuidv4().replace('-', '').slice(0, 10).toUpperCase()
   const newProductData = {
     ...productData,
-    slug: slugify(productData.name)
+    slug: slugify(productData.name),
+    productCode: productCode
   }
 
   return Product.create(newProductData)
@@ -35,11 +36,6 @@ const searchProductByName = async (productName) => {
 
 const getProductByCategoryId = async (categoryId) => {
   return await Product.find({ category: categoryId })
-}
-
-// Tìm product theo minPrice và maxPrice
-const getProductByPriceRange = async (minPrice, maxPrice) => {
-  return await Price.find({ price: { $gte: minPrice, $lte: maxPrice } }).populate('productId')
 }
 
 const getNewestProducts = async (limit) => {
@@ -90,51 +86,33 @@ const updateProduct = async (productId, productData) => {
   return await Product.findByIdAndUpdate(productId, newProductData, { new: true })
 }
 
+const updateProductPrice = async (productId, attributes) => {
+  return await Product.findByIdAndUpdate(productId, { $push: { attributes: attributes } }, { new: true })
+}
+
+const deleteProductPrice = async (productId, attributesId) => {
+  return await Product.findByIdAndUpdate(productId, { $pull: { attributes: { _id: attributesId } } }, { new: true })
+}
+
 const deleteProduct = async (productId) => {
   return await Product.findByIdAndDelete(productId)
 }
 
-// price
-// Thêm price vào product khi tạo thành công
-const addPriceToProduct = async (priceData) => {
-  const price = await Price.create(priceData)
-  await Product.findByIdAndUpdate(priceData.productId, { $push: { attributes: price._id } })
+// // tính tổng sản phẩm đang có theo productId
+// const getTotalProductByProductId = async (productId) => {
+//   const prices = await Price.find({ productId })
+//   let total = 0
+//   prices.forEach((price) => {
+//     total += price.quantity
+//   })
 
-  return price
-}
-
-// lấy tất cả giá của sản phẩm theo id
-const getPriceByProductId = async (productId) => {
-  return await Price.find({ productId })
-}
-
-// update giá trị price theo productID
-const updatePriceByProductId = async (id, data) => {
-  return await Price.findByIdAndUpdate(id, data, { new: true })
-}
-
-const deletePrice = async (id) => {
-  await Price.deleteOne({ _id: id })
-  await Product.updateOne({ attributes: id }, { $pull: { attributes: id } })
-}
-
-// tính tổng sản phẩm đang có theo productId
-const getTotalProductByProductId = async (productId) => {
-  const prices = await Price.find({ productId })
-  let total = 0
-  prices.forEach((price) => {
-    total += price.quantity
-  })
-
-  return total
-}
+//   return total
+// }
 
 export const productService = {
   createProduct,
-  getPriceByProductId,
   getAllProduct,
   getProductById,
-  getProductByPriceRange,
   getNewestProducts,
   getProductsByTag,
   updateProduct,
@@ -143,8 +121,6 @@ export const productService = {
   searchProductByName,
   getBestSellingProducts,
   getProductByCategoryId,
-  addPriceToProduct,
-  updatePriceByProductId,
-  deletePrice,
-  getTotalProductByProductId
+  updateProductPrice,
+  deleteProductPrice
 }

@@ -7,6 +7,10 @@ var productSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    productCode: {
+      type: String,
+      required: true
+    },
     slug: {
       type: String,
       required: true
@@ -22,10 +26,46 @@ var productSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    // các thuộc tính của sản phầm
+    options: [
+      {
+        name: String,
+        code: String
+      }
+    ],
+    // mà sắc sản phẩm
+    colors: [
+      {
+        name: String,
+        code: String
+      }
+    ],
+    // kiểu switch của sản phẩm
+    types: [
+      {
+        name: String,
+        code: String
+      }
+    ],
     attributes: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Price'
+        price: {
+          type: Number,
+          required: true
+        },
+        quantity: {
+          type: Number,
+          required: true
+        },
+        option: {
+          code: String
+        },
+        color: {
+          code: String
+        },
+        switch: {
+          code: String
+        }
       }
     ],
     // số lượng tổng
