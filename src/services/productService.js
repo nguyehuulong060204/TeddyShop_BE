@@ -87,7 +87,13 @@ const updateProduct = async (productId, productData) => {
 }
 
 const updateProductPrice = async (productId, attributes) => {
-  return await Product.findByIdAndUpdate(productId, { $push: { attributes: attributes } }, { new: true })
+  const product = await Product.findById(productId)
+  const caculateQuantity = (await product.attributes.reduce((acc, cur) => acc + cur.quantity, 0)) + attributes.quantity
+  return await Product.findByIdAndUpdate(
+    productId,
+    { $push: { attributes: attributes }, quantity: caculateQuantity },
+    { new: true }
+  )
 }
 
 const deleteProductPrice = async (productId, attributesId) => {
@@ -97,17 +103,6 @@ const deleteProductPrice = async (productId, attributesId) => {
 const deleteProduct = async (productId) => {
   return await Product.findByIdAndDelete(productId)
 }
-
-// // tính tổng sản phẩm đang có theo productId
-// const getTotalProductByProductId = async (productId) => {
-//   const prices = await Price.find({ productId })
-//   let total = 0
-//   prices.forEach((price) => {
-//     total += price.quantity
-//   })
-
-//   return total
-// }
 
 export const productService = {
   createProduct,

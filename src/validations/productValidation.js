@@ -22,7 +22,7 @@ const createProduct = async (req, res, next) => {
       )
       .optional(),
     tags: Joi.array().items(Joi.string()).optional(),
-    createdBy: Joi.string().required().trim(),
+    createdBy: Joi.string().required(),
     options: Joi.array()
       .items(
         Joi.object({
@@ -81,7 +81,8 @@ const updateProduct = async (req, res, next) => {
       .items(
         Joi.object({
           name: Joi.string().trim(),
-          code: Joi.string().trim()
+          code: Joi.string().trim(),
+          _id: Joi.string()
         })
       )
       .optional(),
@@ -89,7 +90,8 @@ const updateProduct = async (req, res, next) => {
       .items(
         Joi.object({
           name: Joi.string().trim(),
-          code: Joi.string().trim()
+          code: Joi.string().trim(),
+          _id: Joi.string()
         })
       )
       .optional(),
@@ -97,7 +99,8 @@ const updateProduct = async (req, res, next) => {
       .items(
         Joi.object({
           name: Joi.string().trim(),
-          code: Joi.string().trim()
+          code: Joi.string().trim(),
+          _id: Joi.string()
         })
       )
       .optional()
