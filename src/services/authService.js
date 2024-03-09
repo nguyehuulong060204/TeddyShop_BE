@@ -121,6 +121,44 @@ const unBlockUser = async (userId) => {
   return await User.findByIdAndUpdate(userId, { isBlocked: false }, { new: true })
 }
 
+const updateAddress = async (userId, addressData) => {
+  return await User.findByIdAndUpdate(userId, { $push: { addresses: addressData } }, { new: true })
+}
+
+// Hàm phụ để đặt lại tất cả `isDefault` thành `false`
+async function resetIsDefault(userId) {
+  await User.updateOne({ _id: userId }, { $set: { 'addresses.$[].isDefault': false } })
+}
+
+const changeAddressDefault = async (userId, addressId) => {
+  // Đặt lại tất cả `isDefault` thành `false`
+  await resetIsDefault(userId)
+
+  // Cập nhật địa chỉ được chọn thành `true`
+  return await User.findByIdAndUpdate(
+    userId,
+    {
+      $set: { 'addresses.$[elem].isDefault': true }
+    },
+    {
+      arrayFilters: [{ 'elem._id': addressId }],
+      new: true
+    }
+  )
+}
+
+const updateNewAddress = async (userId, addressId, addressData) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    { $set: { 'addresses.$[elem]': addressData } },
+    { arrayFilters: [{ 'elem._id': addressId }], new: true }
+  )
+}
+
+const deleteAddress = async (userId, addressId) => {
+  return await User.findByIdAndUpdate(userId, { $pull: { addresses: { _id: addressId } } }, { new: true })
+}
+
 export const authService = {
   createUser,
   loginUser,
@@ -135,5 +173,9 @@ export const authService = {
   deleteUserById,
   updateRefreshToken,
   getProfile,
-  updateProfile
+  updateProfile,
+  updateAddress,
+  updateNewAddress,
+  changeAddressDefault,
+  deleteAddress
 }

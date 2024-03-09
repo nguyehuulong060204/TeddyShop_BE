@@ -36,6 +36,7 @@ const login = async (req, res, next) => {
       userAvatar: user.avatar,
       userPhone: user.phoneNumber,
       userGender: user.gender,
+      userAddress: user.addresses,
       token
     })
   } catch (error) {
@@ -229,6 +230,71 @@ const unBlockUser = async (req, res, next) => {
   }
 }
 
+const updateAddress = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const addressData = req.body
+    const user = await authService.updateAddress(_id, addressData)
+
+    res.status(StatusCodes.OK).json({
+      id: user._id,
+      userName: user.fullName,
+      userEmail: user.email,
+      userAvatar: user.avatar,
+      userPhone: user.phoneNumber,
+      userGender: user.gender,
+      userAddress: user.addresses
+    })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const deleteAddress = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const { addressId } = req.params
+    validateMongodbId(addressId)
+    const user = await authService.deleteAddress(_id, addressId)
+
+    res.status(StatusCodes.OK).json({
+      id: user._id,
+      userName: user.fullName,
+      userEmail: user.email,
+      userAvatar: user.avatar,
+      userPhone: user.phoneNumber,
+      userGender: user.gender,
+      userAddress: user.addresses
+    })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const changeAddressDefault = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const { addressId } = req.params
+    validateMongodbId(addressId)
+    const user = await authService.changeAddressDefault(_id, addressId)
+
+    res.status(StatusCodes.OK).json({
+      id: user._id,
+      userName: user.fullName,
+      userEmail: user.email,
+      userAvatar: user.avatar,
+      userPhone: user.phoneNumber,
+      userGender: user.gender,
+      userAddress: user.addresses
+    })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 export const authController = {
   register,
   login,
@@ -242,5 +308,8 @@ export const authController = {
   unBlockUser,
   deleteUserById,
   getProfile,
-  updateProfile
+  updateProfile,
+  updateAddress,
+  deleteAddress,
+  changeAddressDefault
 }

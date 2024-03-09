@@ -8,8 +8,18 @@ const addToCart = async (req, res, next) => {
     productId: Joi.string().required().trim(),
     quantity: Joi.number().required(),
     price: Joi.number().required(),
-    type: Joi.string().trim().optional(),
-    color: Joi.string().trim().optional()
+    option: Joi.object({
+      name: Joi.string().allow(''),
+      code: Joi.string().allow('')
+    }).optional(),
+    color: Joi.object({
+      name: Joi.string().allow(''),
+      code: Joi.string().allow('')
+    }).optional(),
+    switch: Joi.object({
+      name: Joi.string().allow(''),
+      code: Joi.string().allow('')
+    }).optional()
   })
 
   await conrrectCondition

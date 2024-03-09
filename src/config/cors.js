@@ -23,7 +23,4 @@ export const corsOptions = {
 
   // CORS cho phép nhận cookies từ request
   credentials: true
-
-  // Header "set-cookie" được phép truy cập từ phía client
-  // exposedHeaders: ['set-cookie']
 }

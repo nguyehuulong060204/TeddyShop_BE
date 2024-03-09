@@ -26,7 +26,7 @@ var userSchema = new mongoose.Schema(
     phoneNumber: {
       type: String
     },
-    address: [
+    addresses: [
       {
         fullName: {
           type: String
@@ -43,9 +43,14 @@ var userSchema = new mongoose.Schema(
         state: {
           type: String
         },
-        isActive: {
+        type: {
+          type: String,
+          required: true,
+          enum: ['Nhà riêng', 'Văn phòng']
+        },
+        isDefault: {
           type: Boolean,
-          default: true
+          default: false
         }
       }
     ],

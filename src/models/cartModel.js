@@ -21,11 +21,15 @@ var cartSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    type: {
+    option: {
       name: String,
       code: String
     },
     color: {
+      name: String,
+      code: String
+    },
+    switch: {
       name: String,
       code: String
     },
