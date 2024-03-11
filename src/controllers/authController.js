@@ -295,6 +295,48 @@ const changeAddressDefault = async (req, res, next) => {
   }
 }
 
+const addProductFavorite = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const { productId } = req.params
+    validateMongodbId(productId)
+    const user = await authService.addProductFavorite(_id, productId)
+
+    res.status(StatusCodes.OK).json({
+      favoriteProducts: user.favoriteProducts
+    })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const deleteProductFavorite = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const { productId } = req.params
+    validateMongodbId(productId)
+    const deletedProductFavorite = await authService.deleteProductFavorite(_id, productId)
+
+    res.status(StatusCodes.OK).json({ deletedProductFavorite })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
+const getProductFavorite = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const productsFavorite = await authService.getProductFavoriteByUser(_id)
+
+    res.status(StatusCodes.OK).json({ productsFavorite })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 export const authController = {
   register,
   login,
@@ -311,5 +353,8 @@ export const authController = {
   updateProfile,
   updateAddress,
   deleteAddress,
-  changeAddressDefault
+  changeAddressDefault,
+  addProductFavorite,
+  deleteProductFavorite,
+  getProductFavorite
 }

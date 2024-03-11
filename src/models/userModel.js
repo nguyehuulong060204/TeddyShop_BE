@@ -76,7 +76,7 @@ var userSchema = new mongoose.Schema(
         ref: 'Product'
       }
     ],
-    faviriteBlogs: [
+    favoriteBlogs: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Blog'

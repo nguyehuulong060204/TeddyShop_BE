@@ -159,6 +159,23 @@ const deleteAddress = async (userId, addressId) => {
   return await User.findByIdAndUpdate(userId, { $pull: { addresses: { _id: addressId } } }, { new: true })
 }
 
+const addProductFavorite = async (userId, productId) => {
+  return await User.findByIdAndUpdate(userId, { $addToSet: { favoriteProducts: productId } }, { new: true })
+}
+
+const deleteProductFavorite = async (userId, productId) => {
+  return await User.findByIdAndUpdate(userId, { $pull: { favoriteProducts: productId } }, { new: true })
+}
+
+const getProductFavoriteByUser = async (userId) => {
+  // Trong hàm getProductFavoriteByUser
+  const user = await User.findById(userId).populate('favoriteProducts')
+  if (!user || !user.favoriteProducts) {
+    return [] // Hoặc trả về một giá trị phù hợp nếu không có sản phẩm yêu thích
+  }
+  return user.favoriteProducts
+}
+
 export const authService = {
   createUser,
   loginUser,
@@ -177,5 +194,8 @@ export const authService = {
   updateAddress,
   updateNewAddress,
   changeAddressDefault,
-  deleteAddress
+  deleteAddress,
+  addProductFavorite,
+  deleteProductFavorite,
+  getProductFavoriteByUser
 }
