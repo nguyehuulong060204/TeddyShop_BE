@@ -67,9 +67,15 @@ var userSchema = new mongoose.Schema(
     refreshToken: {
       type: String
     },
-    passwordChangeAt: Date,
-    passwordResetToken: String,
-    passwordResetExpores: String,
+    passwordChangeAt: Date, // thời gian thay đổi mật khẩu
+    passwordResetExpores: Date, // thời gian hết hạn để reset mật khẩu
+    passwordResetToken: String, // mã token để reset mật khẩu// mã token để xác thực email
+    emailVerificationCode: String, // mã code để xác thực email
+    emailVerificationDate: Date, // thời gian hết hạn để xác thực email
+    emailVerified: {
+      type: Boolean,
+      default: false
+    },
     favoriteProducts: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -82,10 +88,6 @@ var userSchema = new mongoose.Schema(
         ref: 'Blog'
       }
     ],
-    isEmailVerified: {
-      type: Boolean,
-      default: false
-    },
     avatar: {
       public_id: String,
       url: String

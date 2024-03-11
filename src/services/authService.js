@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import User from '~/models/userModel'
 import ApiError from '~/utils/ApiError'
-import { sendEmail } from './emailService'
+import { sendEmail, verifyEmail } from './emailService'
 
 const createUser = async (userData) => {
   const existingUser = await User.findOne({ email: userData.email })
@@ -176,6 +176,40 @@ const getProductFavoriteByUser = async (userId) => {
   return user.favoriteProducts
 }
 
+// veryfy email
+const sendEmailCode = async (id, verifyCode, expiryDate) => {
+  const user = await User.findById(id)
+
+  if (!user) {
+    throw new ApiError(StatusCodes.CONFLICT, 'Người dùng không tồn tại, vui lòng thử lại!')
+  }
+
+  if (user.isVerified) {
+    return { message: 'Người dùng đã được xác minh' }
+  }
+
+  user.emailVerificationCode = verifyCode
+  user.emailVerificationDate = expiryDate
+  await user.save()
+
+  await verifyEmail({
+    receiverEmail: user.email,
+    userName: user.fullName,
+    verificationCode: verifyCode
+  })
+}
+
+const verifyEmailCode = async (userId, emailCode) => {
+  const user = await User.findById(userId)
+  if (user.emailVerificationCode === emailCode && user.emailVerificationDate > new Date()) {
+    user.emailVerified = true
+    user.emailVerificationCode = null
+    user.emailVerificationDate = null
+    await user.save()
+    return { message: 'Xác minh email thành công' }
+  }
+}
+
 export const authService = {
   createUser,
   loginUser,
@@ -197,5 +231,7 @@ export const authService = {
   deleteAddress,
   addProductFavorite,
   deleteProductFavorite,
-  getProductFavoriteByUser
+  getProductFavoriteByUser,
+  sendEmailCode,
+  verifyEmailCode
 }

@@ -4,6 +4,7 @@ import { generateRefreshToken } from '~/config/refreshToken'
 import { authService } from '~/services/authService'
 import ApiError from '~/utils/ApiError'
 import validateMongodbId from '~/utils/validateMongodbId'
+import { generateVerificationCode } from '~/utils/verificationCode'
 
 const register = async (req, res, next) => {
   try {
@@ -37,6 +38,7 @@ const login = async (req, res, next) => {
       userPhone: user.phoneNumber,
       userGender: user.gender,
       userAddress: user.addresses,
+      emailVerified: user.emailVerified,
       token
     })
   } catch (error) {
@@ -337,6 +339,43 @@ const getProductFavorite = async (req, res, next) => {
   }
 }
 
+const sendEmailCode = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const { verificationCode, expiryDate } = generateVerificationCode()
+
+    await authService.sendEmailCode(_id, verificationCode, expiryDate)
+
+    res.status(StatusCodes.OK).json({ message: 'Mã xác minh đã được gửi đến email của bạn.' })
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      return next(new ApiError(StatusCodes.BAD_REQUEST, 'Dữ liệu không hợp lệ'))
+    } else if (error.message === 'Email không hợp lệ') {
+      return next(new ApiError(StatusCodes.BAD_REQUEST, 'Email không hợp lệ'))
+    } else {
+      return next(new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, 'Có lỗi xảy ra trên máy chủ'))
+    }
+  }
+}
+
+const verifyEmail = async (req, res, next) => {
+  try {
+    const { _id } = req.user
+    validateMongodbId(_id)
+    const { code } = req.body
+    const user = await authService.verifyEmailCode(_id, code)
+
+    if (!user) {
+      return next(new ApiError(StatusCodes.BAD_REQUEST, 'Mã xác minh không hợp lệ'))
+    }
+
+    res.status(StatusCodes.OK).json({ message: 'Xác thực email thành công' })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 export const authController = {
   register,
   login,
@@ -356,5 +395,7 @@ export const authController = {
   changeAddressDefault,
   addProductFavorite,
   deleteProductFavorite,
-  getProductFavorite
+  getProductFavorite,
+  sendEmailCode,
+  verifyEmail
 }
