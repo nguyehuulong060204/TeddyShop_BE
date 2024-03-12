@@ -23,6 +23,44 @@ const createUser = async (userData) => {
   }
 }
 
+// xử lý đăng nhập bằng social
+/*
+- Lần đăng nhập đầu tiên, vào db tạo dữ liệu cho người dùng lấy các thông tin, userName, userEmail
+- Trả về thông tin để người dùng đăng nhâp
+- Từ những lần đăng nhập sau kiểm tra email và provider xem có đúng giá trị không nếu có thi logic
+- Nếu mà lỗi thì không logic
+*/
+
+const loginSocial = async (userData) => {
+  try {
+    const findUser = await User.findOne({ email: userData.email })
+
+    if (findUser) {
+      if (findUser.provider === userData.provider) {
+        // Người dùng đã đăng nhập trước đó bằng cùng một provider
+        return findUser
+      } else {
+        // Người dùng đã đăng nhập trước đó bằng một provider khác
+        // Xử lý lỗi tại đây (ví dụ: không cho phép đăng nhập bằng nhiều provider khác nhau)
+        throw new ApiError(StatusCodes.BAD_REQUEST, 'Email này đã tồn tại ở tài khoản khác, vui lòng kiểm tra lại.')
+      }
+    } else {
+      // Tài khoản chưa tồn tại - tạo mới tài khoản
+      const newUser = await User.create(userData)
+
+      if (newUser) {
+        // Trả về thông tin để người dùng đăng nhập
+        return newUser
+      } else {
+        // Xử lý lỗi tạo mới tài khoản
+        throw new ApiError(StatusCodes.BAD_REQUEST, 'Đăng nhập không thành công vui lòng thử lại.')
+      }
+    }
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
+}
+
 const updateRefreshToken = async (userId, refreshToken) => {
   return await User.findByIdAndUpdate(userId, { refreshToken }, { new: true })
 }
@@ -213,6 +251,7 @@ const verifyEmailCode = async (userId, emailCode) => {
 export const authService = {
   createUser,
   loginUser,
+  loginSocial,
   verifyRefreshToken,
   getAllUsers,
   logout,

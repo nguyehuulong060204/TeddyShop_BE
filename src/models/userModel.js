@@ -15,7 +15,6 @@ var userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       minlength: 8,
       private: true
     },
@@ -91,6 +90,12 @@ var userSchema = new mongoose.Schema(
     avatar: {
       public_id: String,
       url: String
+    },
+    provider: {
+      type: String,
+      enum: ['Email', 'google.com', 'facebook.com'],
+      required: true,
+      default: 'Email'
     }
   },
   { timestamps: true }

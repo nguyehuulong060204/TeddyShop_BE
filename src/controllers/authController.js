@@ -46,6 +46,35 @@ const login = async (req, res, next) => {
   }
 }
 
+const loginSocial = async (req, res, next) => {
+  try {
+    const { email, fullName, providerId: provider } = req.body
+    const user = await authService.loginSocial({ email, fullName, provider })
+    const refreshToken = await generateRefreshToken(user?._id)
+    const token = await generateToken(user?._id)
+    await authService.updateRefreshToken(user?._id, refreshToken)
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000 * 7
+    })
+
+    res.status(StatusCodes.OK).json({
+      id: user._id,
+      userName: user.fullName,
+      userEmail: user.email,
+      userAvatar: user.avatar,
+      userPhone: user.phoneNumber,
+      userGender: user.gender,
+      userAddress: user.addresses,
+      emailVerified: user.emailVerified,
+      token
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 const loginAdmin = async (req, res, next) => {
   try {
     const { email, password } = req.body
@@ -379,6 +408,7 @@ const verifyEmail = async (req, res, next) => {
 export const authController = {
   register,
   login,
+  loginSocial,
   loginAdmin,
   refreshToken,
   getUsersAdmin,

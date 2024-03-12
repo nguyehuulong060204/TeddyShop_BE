@@ -7,6 +7,7 @@ const Router = express.Router()
 
 Router.post('/register', authValidation.createUser, authController.register)
 Router.post('/login', authValidation.loginUser, authController.login)
+Router.post('/login-social', authController.loginSocial)
 Router.post('/refreshToken', authController.refreshToken)
 Router.post('/logout', authMiddleware, authController.logoutUser)
 Router.post('/send-email', authMiddleware, authController.sendEmailCode)
