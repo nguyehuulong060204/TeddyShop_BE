@@ -127,7 +127,11 @@ const verifyRefreshToken = async (refreshToken) => {
 }
 
 const getAllUsers = async () => {
-  return await User.find({ role: 'user' }).select('-password')
+  return await User.find({ role: 'user', isBlocked: false }).select('-password')
+}
+
+const getUserByEmail = async (userEmail) => {
+  return await User.findOne({ email: userEmail, role: 'user', isBlocked: false }).select('-password')
 }
 
 const deleteUserById = async (userId) => {
@@ -247,12 +251,18 @@ const verifyEmailCode = async (userId, emailCode) => {
   }
 }
 
+// grantAdminPermissionByEmail
+const grantAdminPermissionByEmail = async (userEmail) => {
+  return await User.findOneAndUpdate({ email: userEmail }, { role: 'admin' }, { new: true })
+}
+
 export const authService = {
   createUser,
   loginUser,
   loginSocial,
   verifyRefreshToken,
   getAllUsers,
+  getUserByEmail,
   logout,
   getUserByid,
   blockUser,
@@ -271,5 +281,6 @@ export const authService = {
   deleteProductFavorite,
   getProductFavoriteByUser,
   sendEmailCode,
-  verifyEmailCode
+  verifyEmailCode,
+  grantAdminPermissionByEmail
 }

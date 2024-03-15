@@ -10,6 +10,7 @@ Router.get('/', authMiddleware, isAdmin, orderController.getOrders)
 Router.get('/user', authMiddleware, orderController.getOrderByUserId)
 Router.get('/:id', authMiddleware, orderController.getOrderById)
 Router.put('/:id/status', authMiddleware, isAdmin, orderController.updateOrderStatus)
+Router.put('/cancel-order', authMiddleware, orderController.cancelOrder)
 Router.put('/:id', authMiddleware, orderValidation.updateOrder, orderController.updateOrder)
 
 export const orderRouter = Router

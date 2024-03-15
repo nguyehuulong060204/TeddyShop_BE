@@ -7,7 +7,7 @@ const createFeedback = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     fullName: Joi.string().required().trim(),
     email: Joi.string().email().required(),
-    content: Joi.string().required().trim()
+    content: Joi.string().trim()
   })
 
   await conrrectCondition

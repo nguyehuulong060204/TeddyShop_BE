@@ -67,7 +67,12 @@ var eventSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ['Sự kiện', 'Cuộc thi', 'Hội thảo', 'Khác'] //  Loại sự kiện
-    }
+    },
+    userSubscribe: [
+      {
+        email: String
+      }
+    ]
   },
   {
     timestamps: true

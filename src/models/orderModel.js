@@ -50,13 +50,16 @@ var orderSchema = new mongoose.Schema(
           required: true
         },
         color: {
-          type: String
+          name: String,
+          code: String
         },
         switch: {
-          type: String
+          name: String,
+          code: String
         },
         option: {
-          type: String
+          name: String,
+          code: String
         }
       }
     ],

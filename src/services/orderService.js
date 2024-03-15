@@ -58,6 +58,10 @@ const updateOrder = async (orderId, orderData) => {
   return await Order.findByIdAndUpdate(orderId, orderData, { new: true })
 }
 
+const cancelOrder = async (orderId, cancelDate) => {
+  return await Order.findByIdAndUpdate(orderId, { orderStatus: 'Đã hủy', cancellationDate: cancelDate }, { new: true })
+}
+
 export const orderService = {
   createOrder,
   getAllOrder,
@@ -68,5 +72,6 @@ export const orderService = {
   getOrderByOrderDate,
   getOrderByMonth,
   updateStatus,
-  updateOrder
+  updateOrder,
+  cancelOrder
 }

@@ -111,6 +111,17 @@ const updateOrder = async (req, res, next) => {
   }
 }
 
+const cancelOrder = async (req, res, next) => {
+  try {
+    const { orderId, cancelDate } = req.body
+    const cancelledOrder = await orderService.cancelOrder(orderId, cancelDate)
+
+    res.status(StatusCodes.OK).json({ cancelledOrder })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 export const orderController = {
   createOrder,
   getAllOrder,
@@ -118,5 +129,6 @@ export const orderController = {
   getOrderById,
   getOrders,
   updateOrder,
-  updateOrderStatus
+  updateOrderStatus,
+  cancelOrder
 }

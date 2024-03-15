@@ -205,7 +205,13 @@ const getUsersAdmin = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
   try {
-    const users = await authService.getAllUsers()
+    const { email } = req.query
+    let users
+    if (email) {
+      users = await authService.getUserByEmail(email)
+    } else {
+      users = await authService.getAllUsers()
+    }
 
     res.status(StatusCodes.OK).json({ users })
   } catch (error) {
@@ -405,6 +411,26 @@ const verifyEmail = async (req, res, next) => {
   }
 }
 
+//grantAdminPermissionByEmail
+const grantAdminPermissionByEmail = async (req, res, next) => {
+  try {
+    const { email } = req.body
+    if (!email) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Vui lòng nhập email' })
+    }
+
+    const user = await authService.getUserByEmail(email)
+    if (user) {
+      const updatedRole = await authService.grantAdminPermissionByEmail(email)
+      return res.status(StatusCodes.OK).json({ message: 'Cập nhật thành công!', updatedRole })
+    } else {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: 'Email không tồn tại, vui lòng thử lại.' })
+    }
+  } catch (error) {
+    next(new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, 'Error from server, please try again'))
+  }
+}
+
 export const authController = {
   register,
   login,
@@ -427,5 +453,6 @@ export const authController = {
   deleteProductFavorite,
   getProductFavorite,
   sendEmailCode,
-  verifyEmail
+  verifyEmail,
+  grantAdminPermissionByEmail
 }

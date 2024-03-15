@@ -19,9 +19,21 @@ const createOrder = async (req, res, next) => {
           product: Joi.string().required().trim(),
           quantity: Joi.number().required(),
           price: Joi.number().required(),
-          color: Joi.string().optional().allow(''),
-          switch: Joi.string().optional().allow(''),
-          option: Joi.string().optional().allow('')
+          color: Joi.object({
+            name: Joi.string().allow(''),
+            code: Joi.string().allow(''),
+            _id: Joi.string()
+          }).optional(),
+          switch: Joi.object({
+            name: Joi.string().allow(''),
+            code: Joi.string().allow(''),
+            _id: Joi.string()
+          }).optional(),
+          option: Joi.object({
+            name: Joi.string().allow(''),
+            code: Joi.string().allow(''),
+            _id: Joi.string()
+          }).optional()
         })
       )
       .required(),

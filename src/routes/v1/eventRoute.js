@@ -9,6 +9,7 @@ Router.post('/', authMiddleware, isAdmin, eventValidation.createEvent, eventCont
 Router.get('/getByDateRange', eventValidation.getEventByDateRange, eventController.getByDateRange)
 Router.get('/', eventController.getAllEvent)
 Router.get('/:id', eventController.getEventById)
+Router.put('/subscribe-event', eventController.addUserSubscribeEvent)
 Router.put('/:id', authMiddleware, isAdmin, eventValidation.updateEvent, eventController.updateEvent)
 Router.delete('/:id', authMiddleware, isAdmin, eventController.deleteEventById)
 

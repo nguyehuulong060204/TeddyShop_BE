@@ -71,6 +71,10 @@ const deleteEvent = async (eventId) => {
   return await Event.findByIdAndDelete(eventId)
 }
 
+const addUserSubscribeEvent = async (eventId, userEmail) => {
+  return await Event.findByIdAndUpdate(eventId, { $push: { userSubscribe: { email: userEmail } } }, { new: true })
+}
+
 export const eventService = {
   createEvent,
   getAllEvent,
@@ -82,5 +86,6 @@ export const eventService = {
   getEventByNameAndLocation,
   getUpcomingEvents,
   updateEvent,
-  deleteEvent
+  deleteEvent,
+  addUserSubscribeEvent
 }

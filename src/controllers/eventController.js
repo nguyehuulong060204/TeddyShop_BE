@@ -79,11 +79,23 @@ const deleteEventById = async (req, res, next) => {
   }
 }
 
+const addUserSubscribeEvent = async (req, res, next) => {
+  try {
+    const { eventId, email } = req.body
+    const addUserSubscribe = await eventService.addUserSubscribeEvent(eventId, email)
+
+    res.status(StatusCodes.OK).json({ message: 'Success', addUserSubscribe })
+  } catch (error) {
+    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+  }
+}
+
 export const eventController = {
   createEvent,
   getAllEvent,
   getEventById,
   updateEvent,
   getByDateRange,
-  deleteEventById
+  deleteEventById,
+  addUserSubscribeEvent
 }
