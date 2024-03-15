@@ -5,7 +5,6 @@ import { sendEmail, verifyEmail } from './emailService'
 
 const createUser = async (userData) => {
   const existingUser = await User.findOne({ email: userData.email })
-
   if (existingUser) {
     throw new ApiError(StatusCodes.CONFLICT, 'Email đã tồi tại, vui lòng thử lại!!')
   }

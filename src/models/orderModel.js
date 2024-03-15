@@ -3,16 +3,13 @@ const mongoose = require('mongoose') // Erase if already required
 // Declare the Schema of the Mongo model
 var orderSchema = new mongoose.Schema(
   {
+    orderId: {
+      type: String,
+      required: true,
+      uppercase: true
+    },
     shippingInfo: {
       fullName: {
-        type: String,
-        required: true
-      },
-      address: {
-        type: String,
-        required: true
-      },
-      city: {
         type: String,
         required: true
       },
@@ -20,7 +17,15 @@ var orderSchema = new mongoose.Schema(
         type: String,
         required: true
       },
-      other: {
+      location: {
+        type: String,
+        required: true
+      },
+      city: {
+        type: String,
+        required: true
+      },
+      state: {
         type: String
       }
     },
@@ -36,14 +41,6 @@ var orderSchema = new mongoose.Schema(
           ref: 'Product',
           required: true
         },
-        color: {
-          type: String,
-          required: true
-        },
-        type: {
-          type: String,
-          required: true
-        },
         quantity: {
           type: Number,
           required: true
@@ -51,6 +48,15 @@ var orderSchema = new mongoose.Schema(
         price: {
           type: Number,
           required: true
+        },
+        color: {
+          type: String
+        },
+        switch: {
+          type: String
+        },
+        option: {
+          type: String
         }
       }
     ],
@@ -69,7 +75,7 @@ var orderSchema = new mongoose.Schema(
     orderStatus: {
       type: String,
       default: 'Chờ xác nhận',
-      enum: ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã giao hàng', 'Giao hàng thành công']
+      enum: ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã giao hàng', 'Đã hủy']
     },
     month: {
       type: String,
@@ -77,7 +83,7 @@ var orderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ['Thẻ tín dụng', 'Thanh toán khi nhận hàng', 'Thanh toán qua ví điện tử']
+      enum: ['Thanh toán khi nhận hàng', 'Thanh toán qua ví điện tử']
     },
     cancellationDate: {
       type: Date

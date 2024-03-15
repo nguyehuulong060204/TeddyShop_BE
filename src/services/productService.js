@@ -24,20 +24,24 @@ const getProductById = async (productId) => {
   return await Product.findById(productId).populate('attributes')
 }
 
+// lấy sản phẩm bán chạy
 const getBestSellingProducts = async (limit) => {
   return await Product.find({ status: 'active' }).sort({ quantitySold: -1 }).limit(limit)
 }
 
+// lấy sản phẩm theo tên
 const searchProductByName = async (productName) => {
   const keySearach = slugify(productName)
 
   return await Product.find({ slug: { $regex: keySearach, $options: 'i' } }).populate('attributes')
 }
 
+// lấy sản phẩm theo danh mục
 const getProductByCategoryId = async (categoryId) => {
   return await Product.find({ category: categoryId })
 }
 
+// lấy sản phẩm mới
 const getNewestProducts = async (limit) => {
   return await Product.find().sort({ createdAt: -1 }).limit(limit)
 }
@@ -45,6 +49,21 @@ const getNewestProducts = async (limit) => {
 // lấy sản phẩm dự trên từ khóa tag
 const getProductsByTag = async (tag) => {
   return await Product.find({ tags: { $in: [tag] } })
+}
+
+// lấy sản phẩm theo hãng sản xuất
+const getProductByBrandId = async (brandId) => {
+  return await Product.find({ brand: brandId })
+}
+
+// lấy sản phẩm theo giá
+const getProductByPrice = async (minPrice, maxPrice) => {
+  return await Product.find({ price: { $gte: minPrice, $lte: maxPrice } })
+}
+
+// lấy sản phẩm theo tên a-z : z-a -1,1
+const getProductByName = async (sort) => {
+  return await Product.find().sort({ name: sort })
 }
 
 // update status về inactive khi hết sản phẩm
@@ -110,6 +129,9 @@ export const productService = {
   getProductById,
   getNewestProducts,
   getProductsByTag,
+  getProductByBrandId,
+  getProductByPrice,
+  getProductByName,
   updateProduct,
   updateProductQuantityWhenBuy,
   deleteProduct,

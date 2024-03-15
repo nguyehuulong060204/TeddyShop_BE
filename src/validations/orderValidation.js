@@ -7,34 +7,34 @@ const createOrder = async (req, res, next) => {
   const conrrectCondition = Joi.object({
     shippingInfo: Joi.object({
       fullName: Joi.string().required().trim(),
-      address: Joi.string().required().trim(),
+      phoneNumber: Joi.string().required(),
+      location: Joi.string().required().trim(),
       city: Joi.string().required().trim(),
-      phoneNumber: Joi.string().required().trim(),
-      other: Joi.optional()
+      state: Joi.string().optional().allow('')
     }),
     user: Joi.string().required().trim(),
     orderItems: Joi.array()
       .items(
         Joi.object({
           product: Joi.string().required().trim(),
-          color: Joi.string().required().trim(),
-          type: Joi.string().required().trim(),
           quantity: Joi.number().required(),
-          price: Joi.number().required()
+          price: Joi.number().required(),
+          color: Joi.string().optional().allow(''),
+          switch: Joi.string().optional().allow(''),
+          option: Joi.string().optional().allow('')
         })
       )
       .required(),
     orderDate: Joi.date().required(),
     totalPrice: Joi.number().required(),
-    orderStatus: Joi.string().required().trim(),
     paymentMethod: Joi.string().required().trim()
   })
 
   await conrrectCondition
     .validateAsync(req.body, { abortEarly: false })
     .then(() => next())
-    .catch(() => {
-      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, 'Invalid order data'))
+    .catch((error) => {
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error))
     })
 }
 

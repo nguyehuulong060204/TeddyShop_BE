@@ -1,7 +1,13 @@
 import Order from '~/models/orderModel'
+import { v4 as uuidv4 } from 'uuid'
 
 const createOrder = async (orderData) => {
-  return await Order.create(orderData)
+  const orderCode = uuidv4().replace('-', '').slice(0, 10).toUpperCase()
+  const newOrderData = {
+    ...orderData,
+    orderId: orderCode
+  }
+  return await Order.create(newOrderData)
 }
 
 const getAllOrder = async () => {
@@ -10,7 +16,7 @@ const getAllOrder = async () => {
 
 const getOrderByUserId = async (userId) => {
   return await Order.find({ user: userId })
-    .populate('orderItems.product', 'name')
+    .populate('orderItems.product', 'name images')
     .populate('user', 'fullName')
     .sort({ orderDate: -1 })
 }
@@ -33,7 +39,9 @@ const getOrderByIdAndStatus = async (orderId, orderStatus) => {
 }
 
 const getOrderByOrderDate = async (orderDate) => {
-  return await Order.find({ orderDate: orderDate }).populate('orderItems.product', 'name').populate('user', 'fullName')
+  return await Order.find({ orderDate: orderDate })
+    .populate('orderItems.product', 'name images')
+    .populate('user', 'fullName')
 }
 
 const getOrderByMonth = async (month) => {
