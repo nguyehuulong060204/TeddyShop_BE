@@ -19,14 +19,15 @@ const addToCart = async (req, res, next) => {
     switch: Joi.object({
       name: Joi.string().allow(''),
       code: Joi.string().allow('')
-    }).optional()
+    }).optional(),
+    attributeId: Joi.string().allow('')
   })
 
   await conrrectCondition
     .validateAsync(req.body, { abortEarly: false })
     .then(() => next())
-    .catch(() => {
-      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, 'Invalid cart data'))
+    .catch((error) => {
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, 'Validation Error', error))
     })
 }
 

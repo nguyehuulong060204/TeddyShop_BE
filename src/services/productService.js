@@ -75,25 +75,56 @@ const updateProductStatus = async () => {
   )
 }
 
-// update khi người dùng đã mua hàng
-const updateProductQuantityWhenBuy = async (productId, quantityPurchased) => {
+const updateQuantityAttributes = async (productId, attributeData) => {
   const product = await Product.findById(productId)
+  const productAttributes = product.attributes.find((attribute) => attribute._id.toString() === attributeData._id)
+  if (productAttributes) {
+    return await Product.findByIdAndUpdate(
+      productId,
+      {
+        $set: {
+          'attributes.$[elem].quantity': attributeData.quantity
+        }
+      },
+      {
+        arrayFilters: [{ 'elem._id': attributeData._id }],
+        new: true
+      }
+    )
+  }
+}
 
-  const quantity = product.quantity - quantityPurchased
-  const quantitySold = product.quantitySold + quantityPurchased
-  const quantityAvailable = product.quantity - quantityPurchased
-  // khi người dùng mua hàng thì cập nhật lại trạng thái sản phẩm
-  updateProductStatus()
+const updateProductQuantityWhenBuy = async (orderData) => {
+  let updatedProduct = null
 
-  return Product.findByIdAndUpdate(
-    productId,
-    {
-      quantity,
-      quantitySold,
-      quantityAvailable
-    },
-    { new: true }
-  )
+  for (let i = 0; i < orderData?.length; i++) {
+    const { productId, quantity, attributeId } = orderData[i]
+
+    const product = await Product.findById(productId)
+    if (product) {
+      product.quantity -= quantity
+      product.quantitySold = product.quantitySold + quantity
+      product.quantityAvailable = product.quantity
+
+      // update quantity attributes
+      if (attributeId) {
+        const productAttributes = product.attributes.find((attribute) => attribute._id.toString() === attributeId)
+        if (productAttributes) {
+          productAttributes.quantity -= quantity
+          await updateQuantityAttributes(productId, productAttributes)
+        }
+      }
+
+      // Cập nhật số lượng vào cơ sở dữ liệu
+      await product.save()
+
+      await updateProductStatus()
+
+      updatedProduct = product // Lưu sản phẩm đã được cập nhật số lượng
+    }
+  }
+
+  return updatedProduct // Trả về sản phẩm đã được cập nhật số lượng sau khi vòng lặp kết thúc
 }
 
 const updateProduct = async (productId, productData) => {

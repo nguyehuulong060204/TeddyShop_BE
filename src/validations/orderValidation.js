@@ -33,7 +33,8 @@ const createOrder = async (req, res, next) => {
             name: Joi.string().allow(''),
             code: Joi.string().allow(''),
             _id: Joi.string()
-          }).optional()
+          }).optional(),
+          attributeId: Joi.string().allow('')
         })
       )
       .required(),

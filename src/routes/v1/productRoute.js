@@ -10,6 +10,7 @@ Router.post('/', authMiddleware, isAdmin, productValidation.createProduct, produ
 Router.get('/tags', productController.getProductsByTag)
 Router.get('/', productController.getAllProduct)
 Router.get('/:id', productController.getProductById)
+Router.put('/buy', authMiddleware, productController.updateProductQuantityWhenBuy)
 Router.put('/:id', authMiddleware, isAdmin, productValidation.updateProduct, productController.updateProduct)
 Router.put(
   '/price/:id',
@@ -18,7 +19,6 @@ Router.put(
   productValidation.updateProductPrice,
   productController.updateProductPrice
 )
-Router.put('/buy', authMiddleware, productValidation.updateQuantity, productController.updateProductQuantityWhenBuy)
 Router.delete('/price/:id/:attributesId', authMiddleware, isAdmin, productController.deleteProductPrice)
 Router.delete('/:id', authMiddleware, isAdmin, productController.deleteProduct)
 

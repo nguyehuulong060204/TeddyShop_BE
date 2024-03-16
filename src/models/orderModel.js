@@ -60,6 +60,9 @@ var orderSchema = new mongoose.Schema(
         option: {
           name: String,
           code: String
+        },
+        attributeId: {
+          type: String
         }
       }
     ],

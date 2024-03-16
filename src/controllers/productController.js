@@ -106,12 +106,12 @@ const deleteProductPrice = async (req, res, next) => {
 
 const updateProductQuantityWhenBuy = async (req, res, next) => {
   try {
-    const { productId, quantityPurchased } = req.body
-    const updatedQuantity = await productService.updateProductQuantityWhenBuy(productId, quantityPurchased)
+    const { orderData } = req.body
+    const updatedProduct = await productService.updateProductQuantityWhenBuy(orderData)
 
-    res.status(StatusCodes.OK).json({ updatedQuantity })
+    res.status(StatusCodes.OK).json({ updatedProduct })
   } catch (error) {
-    next(new ApiError(StatusCodes.BAD_REQUEST, 'Error form server, please try again'))
+    next(new ApiError(StatusCodes.BAD_REQUEST, error.message))
   }
 }
 
