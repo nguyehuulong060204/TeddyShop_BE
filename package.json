@@ -3,9 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "author": "Nguyễn Quang Huy",
-  "engines": {
-    "node": "20.9.0"
-  },
   "scripts": {
     "lint": "eslint src --ext js --report-unused-disable-directives --max-warnings 0",
     "clean": "rm -rf build && mkdir build",

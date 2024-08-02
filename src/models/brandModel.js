@@ -9,8 +9,7 @@ var brandSchema = new mongoose.Schema(
       unique: true
     },
     slogan: {
-      type: String,
-      required: true
+      type: String
     },
     description: {
       type: String,

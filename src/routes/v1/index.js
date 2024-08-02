@@ -13,7 +13,6 @@ import { feedbackRouter } from './feedbackRoute'
 import { productRoute } from './productRoute'
 import { orderRouter } from './orderRoute'
 import { cartRouter } from './cartRoute'
-import { vnPay } from './vnpay'
 
 const Router = express.Router()
 
@@ -36,6 +35,5 @@ Router.use('/feedback', feedbackRouter)
 Router.use('/upload', uploadRouter)
 Router.use('/order', orderRouter)
 Router.use('/cart', cartRouter)
-Router.use('/vnpay', vnPay)
 
 export const APIs_V1 = Router
